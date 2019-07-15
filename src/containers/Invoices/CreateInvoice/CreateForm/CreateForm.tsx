@@ -69,6 +69,7 @@ function CreateForm(props: Props) {
     if (props.products
       && formValue.addInvoice
       && formValue.addInvoice.values
+      && formValue.addInvoice.values.product
       && formValue.addInvoice.values.qty) {
       setPrice(props.products[Number(formValue.addInvoice.values.product) - 1].price * Number(formValue.addInvoice.values.qty));
     }
@@ -76,8 +77,8 @@ function CreateForm(props: Props) {
   };
 
   const validator = () => {
-    if (formValue.addInvoice  && 'syncErrors' in formValue.addInvoice) {
-      if(formValue.anyTouched) {
+    if (formValue.addInvoice && 'syncErrors' in formValue.addInvoice) {
+      if (formValue.anyTouched) {
         setIsError(true);
       }
     } else {
@@ -141,7 +142,7 @@ function CreateForm(props: Props) {
           product_id: Number(values.product)
         });
       }
-      if(props.formValue) {
+      if (props.formValue) {
         props.updateInvoice(props.invoice.id, {
           id: Number(props.invoice.id),
           customer_id: values.customer,
@@ -206,7 +207,7 @@ function CreateForm(props: Props) {
 
                 {props.invoice && props.endsUrl && props.invoice.items.map((item: any) => {
                   return (
-                    <tr key={item.id} >
+                    <tr key={item.id}>
                       <td>
                         <FormSection name='itemsGroup'>
                           <Field
