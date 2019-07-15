@@ -16,18 +16,18 @@ type Props = & RouteComponentProps & ReturnType<typeof mapStateToProps>
 
 function Logo(props: Props) {
     const toMainPage = () => {
-        props.history.push('/')
         if(props.formValue.form.addInvoice) {
             if (props.formValue.form.addInvoice.anyTouched === true && !props.formValue.invoices.isInvoiceSaved) {
                 if(window.confirm("no save...go main?")) {
                     props.history.push('/')
+                } else {
+                  return
                 }
-            } else {
-                props.history.push('/')
             }
-              
         }
-    }
+      props.history.push('/')
+    };
+
     return (
         <div className='logo' onClick={toMainPage} >
             Logo

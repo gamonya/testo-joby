@@ -75,6 +75,17 @@ function CreateForm(props: Props) {
 
   };
 
+  const validator = () => {
+    if (formValue.addInvoice  && 'syncErrors' in formValue.addInvoice) {
+      if(formValue.anyTouched) {
+        setIsError(true);
+      }
+    } else {
+      setErrors('');
+      setIsError(false);
+    }
+  };
+
   const createInvoice = () => {
     if (formValue.addInvoice.values) {
       const { values } = formValue.addInvoice;
@@ -159,20 +170,7 @@ function CreateForm(props: Props) {
         && formValue.addInvoice.values.qty !== '') {
         setPriseDynimic();
       }
-      if (formValue.addInvoice  && 'syncErrors' in formValue.addInvoice) {
-        const syncErrors: {} = formValue.addInvoice['syncErrors'];
-        if(formValue.anyTouched) {
-          setErrors(`Fields : ${Object.keys(syncErrors)} is required`);
-          setIsError(true);
-        }
-
-      } else {
-        setErrors('');
-        setIsError(false);
-      }
-
-      console.log(isError)
-      console.log(props)
+      validator();
     }
     // [props.products]
   );
