@@ -14,7 +14,7 @@ import { getEditedQtyState, getEditedProductsState, getEditedCustomerState, getI
 import discountCalculator from '../../../../shared/utils/discountCalculator';
 import { AppState } from '../../../../store';
 import { getProductState } from '../../../../store/products/selectors';
-import { customSelect, customInputNumber, customInput } from './customFields';
+import { customSelect, customInputNumber } from './customFields';
 
 interface PropsOwn {
   products: Products[],
@@ -135,7 +135,7 @@ function CreateForm(props: Props) {
           id: Number(props.invoice.id),
           customer_id: values.customer,
           discount: Number(props.invoice.discount),
-          total: props.total,
+          total: discountCalculator(props.total, props.invoice.discount),
           items: editedResults
         });
       }
@@ -159,6 +159,20 @@ function CreateForm(props: Props) {
         && formValue.addInvoice.values.qty !== '') {
         setPriseDynimic();
       }
+      if (formValue.addInvoice  && 'syncErrors' in formValue.addInvoice) {
+        const syncErrors: {} = formValue.addInvoice['syncErrors'];
+        if(formValue.anyTouched) {
+          setErrors(`Fields : ${Object.keys(syncErrors)} is required`);
+          setIsError(true);
+        }
+
+      } else {
+        setErrors('');
+        setIsError(false);
+      }
+
+      console.log(isError)
+      console.log(props)
     }
     // [props.products]
   );
@@ -301,7 +315,7 @@ function CreateForm(props: Props) {
         {!props.endsUrl &&
         <button
           type="submit"
-          // disabled={submitting}
+          disabled={isError}
           className='submit-button'>Save invoice
         </button>
         }

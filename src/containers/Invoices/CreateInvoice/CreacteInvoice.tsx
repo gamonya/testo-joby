@@ -69,7 +69,6 @@ class CreacteInvoice extends PureComponent<Props, State> {
   }
 
   public setTotalPrice = () => {
-    //
     if (this.props.formValue && this.props.formValue.addInvoice && this.props.formValue.addInvoice.values) {
       const values = this.props.formValue.addInvoice.values
       if(values.itemsGroup ) {
@@ -79,7 +78,6 @@ class CreacteInvoice extends PureComponent<Props, State> {
           res.push(this.props.productsState.products[values.itemsGroup[item]].price * values.qtyGroup[item])
         });
         const total = res.reduce((a: number, b: number) => a + b);
-        console.log(total)
         return total;
       }
     }
