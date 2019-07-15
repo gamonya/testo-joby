@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { getCustomers } from '../../../store/customers/selectors';
-import { getProducts } from '../../../store/products/selectors';
-import { genereteNextIdInvoice, getCurrenInvoiceId, getInvoiceById } from '../../../store/invoices/selectors';
+import { getProducts, getProductState } from '../../../store/products/selectors';
+import { genereteNextIdInvoice, getCurrenInvoiceId, getInvoiceById, getTotalCount } from '../../../store/invoices/selectors';
 import { AppState } from '../../../store';
 
 import './createInvoice.css';
@@ -18,6 +18,7 @@ import { RouteComponentProps } from 'react-router';
 
 interface State {
   price: number,
+  totalPrice: number,
   discount: number,
   nextId: number,
   url: string
@@ -28,9 +29,11 @@ const mapStateToProps = (state: AppState) => {
   return {
     customers: getCustomers(state),
     products: getProducts(state),
+    productsState: getProductState(state),
     nextIDs: genereteNextIdInvoice(state),
     currentIdInvoice: getCurrenInvoiceId(state),
     getInvoiceById: getInvoiceById(state),
+    totalCount: getTotalCount(state),
     formValue: state.form
   };
 };
@@ -50,28 +53,48 @@ type Props =
 class CreacteInvoice extends PureComponent<Props, State> {
 
   public state = {
-    price: 1,
+    price: 0,
     discount: 0,
     nextId: this.props.nextIDs,
-    url: this.props.match.url
+    url: this.props.match.url,
+    totalPrice: 0
   };
 
   public componentDidMount(): void {
     this.props.fetchProducts();
     this.props.fetchCustomers();
+    this.setTotalPrice()
   }
+
+  public setTotalPrice = () => {
+    if (this.props.totalCount) {
+      const result: any = [];
+
+      this.props.totalCount.map(item => {
+        for(let val in item) {
+        result.push(this.props.productsState.products[Number(val)].price * Number(item[val]))
+        }
+      });
+      const total = result.reduce((a: number,b: number) => a + b);
+      this.setState({
+        totalPrice: total
+      });
+    }
+  };
 
   public componentDidUpdate(prevProps: any, prevState: any) {
     const { values } = this.props.formValue.addInvoice;
-
     if (prevState.url !== this.props.match.url) {
       this.setState({
         url: this.props.match.url
       })
     }
 
-    if (prevProps.formValue.addInvoice !== this.props.formValue.addInvoice) {
+    if(prevProps.getInvoiceById !== this.props.getInvoiceById ) {
+      this.setTotalPrice();
+    }
 
+    if (prevProps.formValue.addInvoice !== this.props.formValue.addInvoice) {
       if(values !== undefined && this.props.products !== undefined && values.product !== undefined && values.qty !== undefined) {
         this.setState({
           price: this.props.products[Number(values.product) - 1].price * Number(values.qty),
@@ -99,16 +122,24 @@ class CreacteInvoice extends PureComponent<Props, State> {
           products={products}
           invoice={getInvoiceById}
           endsUrl={endsUrl}
+          total={this.state.totalPrice}
           nextId={this.state.nextId}
         />
         {/* =================  Total ===========   */}
         <div className='product-total'>
           <div className='total-title'>total</div>
-          <div className='total-count'>
+          {/*  CREATE PAGE */}
+         {this.state.url === '/invoices/create/' && <div className='total-count'>
             {
               discountCalculator(this.state.price, this.state.discount)
             }
-          </div>
+          </div>}
+          {/*  EDIT PAGE */}
+          {endsUrl && <div className='total-count'>
+            {this.props.getInvoiceById &&
+              discountCalculator(this.state.totalPrice, this.props.getInvoiceById.discount)
+            }
+          </div>}
         </div>
       </div>
     );

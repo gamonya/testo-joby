@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import './invoices.css';
@@ -36,7 +36,7 @@ type Props =
   ;
 
 
-class InvoicesPage extends PureComponent<Props, {}> {
+class InvoicesPage extends Component<Props, {}> {
 
   public componentDidMount(): void {
     this.props.fetchInvoices();
