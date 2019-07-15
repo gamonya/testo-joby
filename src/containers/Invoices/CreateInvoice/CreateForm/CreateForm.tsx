@@ -10,7 +10,7 @@ import { Customers } from '../../../../store/customers/types';
 import { Dispatch } from 'redux';
 import { Invoices } from '../../../../store/invoices/types';
 import { Actions } from '../../../../store/invoices/actions';
-import { getEditedQtyState, getEditedProductsState, getEditedCustomerState } from '../../../../store/invoices/selectors';
+import { getEditedQtyState, getEditedProductsState, getEditedCustomerState, getInvoiceState } from '../../../../store/invoices/selectors';
 import discountCalculator from '../../../../shared/utils/discountCalculator';
 import { AppState } from '../../../../store';
 import { getProductState } from '../../../../store/products/selectors';
@@ -30,6 +30,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     formValue: state.form,
     productState: getProductState(state),
+    invoicesState: getInvoiceState(state),
     initialValues: {
       itemsGroup: getEditedProductsState(state),
       qtyGroup: getEditedQtyState(state),
@@ -129,13 +130,15 @@ function CreateForm(props: Props) {
           product_id: Number(values.product)
         });
       }
-      props.updateInvoice(props.invoice.id, {
-        id: Number(props.invoice.id),
-        customer_id: values.customer,
-        discount: Number(props.invoice.discount),
-        total: props.total,
-        items: editedResults
-      });
+      if(props.formValue) {
+        props.updateInvoice(props.invoice.id, {
+          id: Number(props.invoice.id),
+          customer_id: values.customer,
+          discount: Number(props.invoice.discount),
+          total: props.total,
+          items: editedResults
+        });
+      }
 
     }
   };

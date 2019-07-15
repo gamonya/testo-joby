@@ -9,7 +9,9 @@ const initialState: InvoiseState = {
   isLoading: true,
   error: null,
   invoices: {},
-  isInvoiceSaved: false
+  isInvoiceSaved: false,
+  startSave: true,
+  currentTotalCount: 0
 };
 
 export function reducer(
@@ -48,6 +50,12 @@ export function reducer(
           ...state.invoices,
           [action.payload.id]: action.payload.invoices
         }
+      }
+    }
+    case ActionTypes.SET_CURRENT_TOTAL_COUNT: {
+      return {
+        ...state,
+        currentTotalCount: action.payload
       }
     }
     case ActionTypes.REMOVE_INVOICE: {

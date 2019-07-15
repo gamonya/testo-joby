@@ -63,47 +63,49 @@ class CreacteInvoice extends PureComponent<Props, State> {
   public componentDidMount(): void {
     this.props.fetchProducts();
     this.props.fetchCustomers();
-    this.setTotalPrice()
+    this.setState({
+      totalPrice: this.setTotalPrice()
+    });
   }
 
   public setTotalPrice = () => {
-    if (this.props.totalCount) {
-      const result: any = [];
-
-      this.props.totalCount.map(item => {
-        for(let val in item) {
-        result.push(this.props.productsState.products[Number(val)].price * Number(item[val]))
-        }
-      });
-      const total = result.reduce((a: number,b: number) => a + b);
-      this.setState({
-        totalPrice: total
-      });
+    //
+    if (this.props.formValue && this.props.formValue.addInvoice && this.props.formValue.addInvoice.values) {
+      const values = this.props.formValue.addInvoice.values
+      if(values.itemsGroup ) {
+        const res: any = []
+        const keys = Object.keys(values.itemsGroup)
+        keys.map((item: any) => {
+          res.push(this.props.productsState.products[values.itemsGroup[item]].price * values.qtyGroup[item])
+        });
+        const total = res.reduce((a: number, b: number) => a + b);
+        console.log(total)
+        return total;
+      }
     }
   };
 
   public componentDidUpdate(prevProps: any, prevState: any) {
+    this.setState({
+      totalPrice: this.setTotalPrice()
+    });
     const { values } = this.props.formValue.addInvoice;
     if (prevState.url !== this.props.match.url) {
       this.setState({
         url: this.props.match.url
-      })
-    }
-
-    if(prevProps.getInvoiceById !== this.props.getInvoiceById ) {
-      this.setTotalPrice();
+      });
     }
 
     if (prevProps.formValue.addInvoice !== this.props.formValue.addInvoice) {
-      if(values !== undefined && this.props.products !== undefined && values.product !== undefined && values.qty !== undefined) {
+      if (values !== undefined && this.props.products !== undefined && values.product !== undefined && values.qty !== undefined) {
         this.setState({
-          price: this.props.products[Number(values.product) - 1].price * Number(values.qty),
+          price: this.props.products[Number(values.product) - 1].price * Number(values.qty)
         });
 
         if (values.discount !== undefined) {
           this.setState({
             discount: values.discount
-          })
+          });
         }
       }
     }
@@ -112,7 +114,6 @@ class CreacteInvoice extends PureComponent<Props, State> {
   render() {
     const { customers, products, getInvoiceById } = this.props;
     const endsUrl = this.state.url.endsWith('edit');
-
     return (
       <div className='create-container'>
         {this.state.url === '/invoices/create/' && <h4 className='viev-title-id'>Invoice #{this.state.nextId}</h4>}
@@ -129,7 +130,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
         <div className='product-total'>
           <div className='total-title'>total</div>
           {/*  CREATE PAGE */}
-         {this.state.url === '/invoices/create/' && <div className='total-count'>
+          {this.state.url === '/invoices/create/' && <div className='total-count'>
             {
               discountCalculator(this.state.price, this.state.discount)
             }
@@ -137,7 +138,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
           {/*  EDIT PAGE */}
           {endsUrl && <div className='total-count'>
             {this.props.getInvoiceById &&
-              discountCalculator(this.state.totalPrice, this.props.getInvoiceById.discount)
+            discountCalculator(this.state.totalPrice, this.props.getInvoiceById.discount) || 0
             }
           </div>}
         </div>
