@@ -15,6 +15,7 @@ import { Actions as ActionsCustomers } from '../../../store/customers/actions';
 
 import CreateForm from './CreateForm/CreateForm';
 import { RouteComponentProps } from 'react-router';
+import { Actions } from '../../../store/invoices/actions';
 
 interface State {
   price: number,
@@ -39,7 +40,8 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart()),
-  fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart())
+  fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
+  setCurrentTotal: (payload: number) => dispatch(Actions.setCurrentTotalCount(payload))
 });
 
 
@@ -62,6 +64,9 @@ class CreacteInvoice extends PureComponent<Props, State> {
   public componentDidMount(): void {
     this.props.fetchProducts();
     this.props.fetchCustomers();
+
+
+
     this.setState({
       totalPrice: this.setTotalPrice()
     });
@@ -84,9 +89,13 @@ class CreacteInvoice extends PureComponent<Props, State> {
   };
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState:  Readonly<State>) {
+    //  Сделать правильное оновление
     this.setState({
       totalPrice: this.setTotalPrice()
     });
+
+    this.props.setCurrentTotal(this.setTotalPrice());
+    //
     const { values } = this.props.formValue.addInvoice;
     if (prevState.url !== this.props.match.url) {
       this.setState({

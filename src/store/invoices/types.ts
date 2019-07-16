@@ -22,6 +22,5 @@ export interface InvoiseState {
   isLoading: boolean,
   error: string | null,
   isInvoiceSaved: boolean,
-  startSave: boolean,
   currentTotalCount: number
 }

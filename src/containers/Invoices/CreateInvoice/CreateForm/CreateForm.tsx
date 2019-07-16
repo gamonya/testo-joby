@@ -42,7 +42,8 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   addInvoice: (payload: Invoices) => dispatch(Actions.addInvoice(payload)),
   updateInvoice: (id: number, payload: Invoices) => dispatch(Actions.updateInvoice(id, payload)),
-  invoiceSaved: (payload: boolean) => dispatch(Actions.invoiceSaved(payload))
+  invoiceSaved: (payload: boolean) => dispatch(Actions.invoiceSaved(payload)),
+  startSave: () => dispatch(Actions.startSave())
 });
 
 
@@ -101,24 +102,12 @@ function CreateForm(props: Props) {
         setIsError(false);
       }
 
-
-      const invoice = {
-        id: props.nextId,
-        customer_id: Number(values.customer),
-        discount: Number(values.discount),
-        total: discountCalculator(price, Number(values.discount)),
-        items: [{
-          id: Number(uniqueId()),
-          invoice_id: props.nextId,
-          product_id: Number(values.product),
-          quantity: Number(values.qty)
-        }]
-      };
       if (!isError) {
-        props.addInvoice(invoice);
+        props.startSave();
         props.invoiceSaved(false);
       }
     }
+
   };
 
   const editInvoice = () => {
@@ -155,7 +144,6 @@ function CreateForm(props: Props) {
     }
   };
   const submitForm = (e: React.SyntheticEvent) => {
-    console.log(props.formValue.addInvoice.values)
     e.preventDefault();
     if (!props.endsUrl) {
       createInvoice();
