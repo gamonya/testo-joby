@@ -77,8 +77,6 @@ export const getEditedCustomerState = createSelector(
 );
 
 
-
-
 export const getTotalCount = createSelector(
   getInvoiceState,
   (state: InvoiseState) => {
@@ -86,7 +84,7 @@ export const getTotalCount = createSelector(
       let result = state.invoices[state.currentIdInvoice].items.map((item: any) => {
         return { [item.id]: {[item.product_id]:item.quantity}};
       });
-      const items = result.reduce((acc: any, item: any, index) => {
+      const items = result.reduce((acc: any, item: any) => {
         return {
           ...acc,
           [Number(Object.keys(item))]: item[Object.keys(item).toString()]

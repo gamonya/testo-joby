@@ -52,12 +52,12 @@ export function reducer(
         }
       }
     }
-    case ActionTypes.SET_CURRENT_TOTAL_COUNT: {
-      return {
-        ...state,
-        currentTotalCount: action.payload
-      }
-    }
+    // case ActionTypes.SET_CURRENT_TOTAL_COUNT: {
+    //   return {
+    //     ...state,
+    //     currentTotalCount: action.payload
+    //   }
+    // }
     case ActionTypes.REMOVE_INVOICE: {
       const invoices = omit(state.invoices, action.payload);
       const ids = Object.keys(invoices).map(Number);

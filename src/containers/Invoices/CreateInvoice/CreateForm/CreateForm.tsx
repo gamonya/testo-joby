@@ -172,8 +172,21 @@ function CreateForm(props: Props) {
         setPriseDynimic();
       }
       validator();
-    }
-    // [props.products]
+      console.log(props);
+      if(
+        props.endsUrl
+        && formValue.addInvoice
+        && formValue.addInvoice.anyTouched
+        && formValue.addInvoice.values
+        && formValue.addInvoice.values.itemsGroup
+        && !formValue.addInvoice.values.product
+        && !formValue.addInvoice.values.qty
+        && formValue.addInvoice.values.qtyGroup) {
+        editInvoice();
+      }
+
+    },
+    [props.formValue.addInvoice]
   );
 
   return (
@@ -311,20 +324,20 @@ function CreateForm(props: Props) {
           </div>
         </div>
         {/* ===========  SUBMIT BUTTON =========   */}
-        {!props.endsUrl &&
+
         <button
           type="submit"
           disabled={isError}
           className='submit-button'>Save invoice
         </button>
-        }
-        {props.endsUrl &&
-        <button
-          type="submit"
-          // disabled={submitting}
-          className='submit-button'>Edite invoice
-        </button>
-        }
+
+        {/*{props.endsUrl &&*/}
+        {/*<button*/}
+          {/*type="submit"*/}
+          {/*// disabled={submitting}*/}
+          {/*className='submit-button'>Edite invoice*/}
+        {/*</button>*/}
+        {/*}*/}
       </form>
     </>
   );
