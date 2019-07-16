@@ -1,7 +1,7 @@
 import { Epic, ofType } from 'redux-observable';
 import { uniqueId } from 'lodash';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { mergeMap, map, catchError, mapTo, tap } from 'rxjs/operators';
+import { mergeMap, map, catchError, mapTo, delay } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
 import { from, of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
@@ -19,12 +19,12 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion, any> = (action$) => {
   );
 };
 
-export const invoiceSaved: Epic<ActionTypeUnion, any> = (action$) => {
-  return action$.pipe(
-    ofType(ActionTypes.ADD_INVOICE),
-    mapTo(Actions.invoiceSaved(true))
-  );
-};
+// export const invoiceSaved: Epic<ActionTypeUnion, any> = (action$) => {
+//   return action$.pipe(
+//     ofType(ActionTypes.ADD_INVOICE),
+//     mapTo(Actions.invoiceSaved(true))
+//   );
+// };
 
 export const saveInvoice: Epic<ActionTypeUnion, any> = (action$, state) => {
   return action$.pipe(
@@ -49,8 +49,7 @@ export const saveInvoice: Epic<ActionTypeUnion, any> = (action$, state) => {
             quantity: Number(state.value.form.addInvoice.values.qty)
           }]
         };
-        return of(Actions.addInvoice(invoice));
-
+        return of(Actions.addInvoice(invoice), Actions.invoiceSaved(true), Actions.invoiceSaved(false))
       }
     })
   );
