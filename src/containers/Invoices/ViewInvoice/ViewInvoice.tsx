@@ -47,7 +47,6 @@ class ViewPage extends PureComponent<Props, {}> {
 
   public render() {
     const { invoice, customer } = this.props;
-    console.log(this.props);
     if (invoice) {
       return (
         <div className='view-container'>

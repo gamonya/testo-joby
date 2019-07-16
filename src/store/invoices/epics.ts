@@ -1,7 +1,7 @@
 import { Epic, ofType } from 'redux-observable';
 import { uniqueId } from 'lodash';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { mergeMap, map, catchError, tap } from 'rxjs/operators';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
 import { from, of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
@@ -56,7 +56,6 @@ export const saveInvoice: Epic<ActionTypeUnion, any> = (action$, state) => {
 
 export const startUpdate: Epic<ActionTypeUnion, any> = (action$, state) => {
   return action$.pipe(
-    tap(() => console.log(state.value)),
     ofType(ActionTypes.START_UPDATE),
     mergeMap((action: any): any => {
 

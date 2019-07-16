@@ -7,7 +7,7 @@ import InvoicesPage from './Invoices/InvoicesPage';
 import Header from './components/Header/Header';
 import NoMatch from './NoMatch';
 import MainPage from './MainPage/MainPage';
-import ViewPage from './Invoices/ViewInvoice';
+import ViewPage from './Invoices/ViewInvoice/ViewInvoice';
 import CreateInvoice from './Invoices/CreateInvoice/CreacteInvoice';
 
 import './App.css';
