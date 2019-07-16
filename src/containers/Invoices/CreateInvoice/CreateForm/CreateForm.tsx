@@ -42,7 +42,8 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   updateInvoice: (id: number, payload: Invoices) => dispatch(Actions.updateInvoice(id, payload)),
   invoiceSaved: (payload: boolean) => dispatch(Actions.invoiceSaved(payload)),
-  startSave: () => dispatch(Actions.startSave())
+  startSave: () => dispatch(Actions.startSave()),
+  startUpdate: (payload: number) => dispatch(Actions.startUpdate(payload))
 });
 
 
@@ -103,44 +104,13 @@ function CreateForm(props: Props) {
 
       if (!isError) {
         props.startSave();
-        // props.invoiceSaved(false);
       }
     }
 
   };
 
   const editInvoice = () => {
-    if (formValue.addInvoice.values) {
-      const { values } = formValue.addInvoice;
-      const editedResults = [];
-      for (let item in values.qtyGroup) {
-        const itemsValuesFromEdit = {
-          id: Number(item),
-          invoice_id: Number(props.invoice.id),
-          quantity: Number(values.qtyGroup[item]),
-          product_id: Number(values.itemsGroup[item])
-        };
-        editedResults.push(itemsValuesFromEdit);
-      }
-      if (values.product && values.qty) {
-        editedResults.push({
-          id: Number(uniqueId()),
-          invoice_id: Number(props.invoice.id),
-          quantity: Number(values.qty),
-          product_id: Number(values.product)
-        });
-      }
-      if (props.formValue) {
-        props.updateInvoice(props.invoice.id, {
-          id: Number(props.invoice.id),
-          customer_id: values.customer,
-          discount: Number(props.invoice.discount),
-          total: discountCalculator(props.total, props.invoice.discount),
-          items: editedResults
-        });
-      }
-
-    }
+    props.startUpdate(props.total);
   };
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -149,10 +119,6 @@ function CreateForm(props: Props) {
     }
     if (props.endsUrl) {
       editInvoice();
-      // if(props.formValue && props.formValue.addInvoice.values && props.formValue.addInvoice.values.product && props.formValue.addInvoice.values.qty){
-      //   console.log(2)
-      //   createInvoice();
-      // }
     }
   };
 
