@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import myValidator from './validate';
 import { Field, reduxForm, FormSection } from 'redux-form';
 import { connect } from 'react-redux';
-import { uniqueId } from 'lodash';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Products } from '../../../../store/products/types';
@@ -11,7 +10,6 @@ import { Dispatch } from 'redux';
 import { Invoices } from '../../../../store/invoices/types';
 import { Actions } from '../../../../store/invoices/actions';
 import { getEditedQtyState, getEditedProductsState, getEditedCustomerState, getInvoiceState } from '../../../../store/invoices/selectors';
-import discountCalculator from '../../../../shared/utils/discountCalculator';
 import { AppState } from '../../../../store';
 import { getProductState } from '../../../../store/products/selectors';
 import { customSelect, customInputNumber } from './customFields';
@@ -112,6 +110,7 @@ function CreateForm(props: Props) {
   const editInvoice = () => {
     props.startUpdate(props.total);
   };
+
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!props.endsUrl) {
@@ -283,20 +282,11 @@ function CreateForm(props: Props) {
           </div>
         </div>
         {/* ===========  SUBMIT BUTTON =========   */}
-
         <button
           type="submit"
           disabled={isError}
           className='submit-button'>Save invoice
         </button>
-
-        {/*{props.endsUrl &&*/}
-        {/*<button*/}
-          {/*type="submit"*/}
-          {/*// disabled={submitting}*/}
-          {/*className='submit-button'>Edite invoice*/}
-        {/*</button>*/}
-        {/*}*/}
       </form>
     </>
   );
