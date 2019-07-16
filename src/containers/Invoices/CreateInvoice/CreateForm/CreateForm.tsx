@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import myValidator from './validate';
 import { Field, reduxForm, FormSection } from 'redux-form';
 import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter, Redirect } from 'react-router-dom';
 
 import { Products } from '../../../../store/products/types';
 import { Customers } from '../../../../store/customers/types';
@@ -88,7 +88,6 @@ function CreateForm(props: Props) {
 
   const createInvoice = () => {
     if (formValue.addInvoice.values) {
-      const { values } = formValue.addInvoice;
       // Validation
       if ('syncErrors' in formValue.addInvoice) {
         const syncErrors: {} = formValue.addInvoice['syncErrors'];
@@ -99,7 +98,7 @@ function CreateForm(props: Props) {
         setErrors('');
         setIsError(false);
       }
-
+      console.log(formValue.addInvoice.values);
       if (!isError) {
         props.startSave();
       }
@@ -130,24 +129,23 @@ function CreateForm(props: Props) {
       }
       validator();
       // auto update
-      if(
+
+      if (
         props.endsUrl
+        && props.invoice
         && formValue.addInvoice
-        && formValue.addInvoice.anyTouched
-        && formValue.addInvoice.values
-        && formValue.addInvoice.values.itemsGroup
-        && !formValue.addInvoice.values.product
-        && !formValue.addInvoice.values.qty
-        && formValue.addInvoice.values.qtyGroup) {
+        && formValue.addInvoice.values) {
         editInvoice();
       }
-
+      console.log(props);
     },
     [props.formValue.addInvoice]
   );
 
   return (
     <>
+      {/*  Redirect when EMPTY invoices */}
+      {!props.invoice && <Redirect to="/invoices/" />}
       <form
         className='create-form'
         onSubmit={submitForm}
@@ -282,11 +280,11 @@ function CreateForm(props: Props) {
           </div>
         </div>
         {/* ===========  SUBMIT BUTTON =========   */}
-        <button
+        {!props.endsUrl && <button
           type="submit"
           disabled={isError}
           className='submit-button'>Save invoice
-        </button>
+        </button>}
       </form>
     </>
   );
