@@ -65,7 +65,7 @@ function CreateForm(props: Props) {
   const [errors, setErrors] = useState('');
   const [isError, setIsError] = useState(false);
 
-  const setPriseDynimic = () => {
+  const setPriseDynamic = () => {
     if (props.products
       && formValue.addInvoice
       && formValue.addInvoice.values
@@ -155,12 +155,17 @@ function CreateForm(props: Props) {
     }
   };
   const submitForm = (e: React.SyntheticEvent) => {
+    console.log(props.formValue.addInvoice.values)
     e.preventDefault();
     if (!props.endsUrl) {
       createInvoice();
     }
     if (props.endsUrl) {
       editInvoice();
+      // if(props.formValue && props.formValue.addInvoice.values && props.formValue.addInvoice.values.product && props.formValue.addInvoice.values.qty){
+      //   console.log(2)
+      //   createInvoice();
+      // }
     }
   };
 
@@ -169,10 +174,10 @@ function CreateForm(props: Props) {
         && formValue.addInvoice
         && formValue.addInvoice.values
         && formValue.addInvoice.values.qty !== '') {
-        setPriseDynimic();
+        setPriseDynamic();
       }
       validator();
-      console.log(props);
+      // auto update
       if(
         props.endsUrl
         && formValue.addInvoice
@@ -196,6 +201,7 @@ function CreateForm(props: Props) {
         onSubmit={submitForm}
       >
         {errors && <h4>{errors}</h4>}
+
         <div className='form-content'>
           {/* FORM LEFT PART */}
           <div className='form-left'>
@@ -318,7 +324,7 @@ function CreateForm(props: Props) {
                 max='50'
               >
               </Field>}
-              {/*  mathc edit page */}
+              {/*  match edit page */}
               {props.endsUrl && props.invoice && <span>{props.invoice.discount}</span>}
             </div>
           </div>

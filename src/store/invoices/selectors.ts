@@ -28,11 +28,11 @@ export const genereteNextIdInvoice = createSelector(
   }
 );
 
-export const getCurrenInvoiceId = createSelector(
+export const getCurrentInvoiceId = createSelector(
   getInvoiceState,
   (state: InvoiseState) => state.currentIdInvoice
 );
-
+// STATE FOR EDIT PAGE DEFAULT VALUES
 export const getEditedQtyState = createSelector(
   getInvoiceState,
   (state: InvoiseState) => {
@@ -72,25 +72,6 @@ export const getEditedCustomerState = createSelector(
   (state: InvoiseState) => {
     if (state.invoices[state.currentIdInvoice]) {
       return state.invoices[state.currentIdInvoice].customer_id;
-    }
-  }
-);
-
-
-export const getTotalCount = createSelector(
-  getInvoiceState,
-  (state: InvoiseState) => {
-    if (state.invoices[state.currentIdInvoice]) {
-      let result = state.invoices[state.currentIdInvoice].items.map((item: any) => {
-        return { [item.id]: {[item.product_id]:item.quantity}};
-      });
-      const items = result.reduce((acc: any, item: any) => {
-        return {
-          ...acc,
-          [Number(Object.keys(item))]: item[Object.keys(item).toString()]
-        }
-      });
-      return Object.values(items)
     }
   }
 );

@@ -10,8 +10,8 @@ export enum ActionTypes {
   ADD_INVOICE = 'ADD_INVOICE',
   REMOVE_INVOICE = 'REMOVE_INVOICE',
   UPDATE_INVOICE = 'UPDATE_INVOICE',
-  START_SAVE = 'START_SAVE',
-  SET_CURRENT_TOTAL_COUNT = 'SET_CURRENT_TOTAL_COUNT',
+  // START_SAVE = 'START_SAVE',
+  // SET_CURRENT_TOTAL_COUNT = 'SET_CURRENT_TOTAL_COUNT',
   INVOICE_SAIVED = 'INVOICE_SAIVED'
 }
 
@@ -24,7 +24,7 @@ export const Actions = {
   removeInvoice: (id: number) => action(ActionTypes.REMOVE_INVOICE, id),
   invoiceSaved: (payload: boolean) => action(ActionTypes.INVOICE_SAIVED, payload),
   startSave: (payload: boolean) => action(ActionTypes.INVOICE_SAIVED, payload),
-  setCurrentTotalCount: (payload: number) => action(ActionTypes.SET_CURRENT_TOTAL_COUNT, payload),
+  // setCurrentTotalCount: (payload: number) => action(ActionTypes.SET_CURRENT_TOTAL_COUNT, payload),
   updateInvoice: (id: number, invoices: Invoices) => action(ActionTypes.UPDATE_INVOICE, {id, invoices})
 };
 

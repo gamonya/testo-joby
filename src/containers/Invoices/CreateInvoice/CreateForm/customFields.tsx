@@ -42,10 +42,3 @@ export const customInputNumber = ({
     </div>
   </div>);
 };
-
-export const customInput = (props: any) => {
-  console.log(props)
-  return (
-    <input {...props} type='text'/>
-  );
-};

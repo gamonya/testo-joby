@@ -4,7 +4,7 @@ import {  Route, Switch  } from 'react-router-dom';
 import ProductsPage from './Products/ProductsPage';
 import CustomersPage from './Customers/CustomersPage';
 import InvoicesPage from './Invoices/InvoicesPage';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import NoMatch from './NoMatch';
 import MainPage from './MainPage/MainPage';
 import ViewPage from './Invoices/ViewInvoice';

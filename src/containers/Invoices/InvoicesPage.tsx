@@ -55,7 +55,10 @@ class InvoicesPage extends PureComponent<Props, {}> {
   };
 
   removeInvoice = (id: number) => {
-    this.props.removeInvoice(id);
+    if(window.confirm('Are you sure you want to delete an invoice?')) {
+      this.props.removeInvoice(id);
+    }
+
   };
 
   public render() {

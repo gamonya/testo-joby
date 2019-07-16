@@ -34,7 +34,7 @@ class ProductsPage extends Component<Props, {}> {
 
   public render() {
     const { products, error } = this.props;
-    if (error === '') {
+    if (!error) {
       return (
         <table className='table'>
           <tbody>

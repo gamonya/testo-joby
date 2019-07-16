@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import './customer.css';
 
 import { AppState } from '../../store';
-import { getCustomers } from '../../store/customers/selectors';
+import { getCustomers, getCustomersError } from '../../store/customers/selectors';
 import { Dispatch } from 'redux';
 import { Actions } from '../../store/customers/actions';
-
 
 // STORE PROPS
 const mapStateToProps = (state: AppState) => {
   return {
-    customers: getCustomers(state)
+    customers: getCustomers(state),
+    error: getCustomersError(state)
   };
 };
 
@@ -32,27 +32,33 @@ class CustomersPage extends PureComponent<Props, {}> {
   }
 
   public render() {
-    const { customers } = this.props;
-    return (
-      <table className='table'>
-        <tbody>
-        <tr className='table-title'>
-          <th>Customer Name</th>
-          <th>Customer Address</th>
-          <th>Customer Phone number</th>
-        </tr>
-        {customers.map((item) => {
-          return (
-            <tr key={item.id.toString()}>
-              <td>{item.name}</td>
-              <td>{item.address}</td>
-              <td>{item.phone}</td>
-            </tr>
-          );
-        })}
-        </tbody>
-      </table>
-    );
+    const { customers, error } = this.props;
+    if(!error) {
+      return (
+        <table className='table'>
+          <tbody>
+          <tr className='table-title'>
+            <th>Customer Name</th>
+            <th>Customer Address</th>
+            <th>Customer Phone number</th>
+          </tr>
+          {customers.map((item) => {
+            return (
+              <tr key={item.id.toString()}>
+                <td>{item.name}</td>
+                <td>{item.address}</td>
+                <td>{item.phone}</td>
+              </tr>
+            );
+          })}
+          </tbody>
+        </table>
+      );
+    } else {
+      return (
+        <h1>{error}</h1>
+      )
+    }
   }
 }
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { getCustomers } from '../../../store/customers/selectors';
 import { getProducts, getProductState } from '../../../store/products/selectors';
-import { genereteNextIdInvoice, getCurrenInvoiceId, getInvoiceById, getTotalCount } from '../../../store/invoices/selectors';
+import { genereteNextIdInvoice, getCurrentInvoiceId, getInvoiceById } from '../../../store/invoices/selectors';
 import { AppState } from '../../../store';
 
 import './createInvoice.css';
@@ -31,9 +31,8 @@ const mapStateToProps = (state: AppState) => {
     products: getProducts(state),
     productsState: getProductState(state),
     nextIDs: genereteNextIdInvoice(state),
-    currentIdInvoice: getCurrenInvoiceId(state),
+    currentIdInvoice: getCurrentInvoiceId(state),
     getInvoiceById: getInvoiceById(state),
-    totalCount: getTotalCount(state),
     formValue: state.form
   };
 };
@@ -68,6 +67,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
     });
   }
 
+  // d
   public setTotalPrice = () => {
     if (this.props.formValue && this.props.formValue.addInvoice && this.props.formValue.addInvoice.values) {
       const values = this.props.formValue.addInvoice.values;
@@ -83,7 +83,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
     }
   };
 
-  public componentDidUpdate(prevProps: any, prevState: any) {
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState:  Readonly<State>) {
     this.setState({
       totalPrice: this.setTotalPrice()
     });
