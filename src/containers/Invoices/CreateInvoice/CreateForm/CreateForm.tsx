@@ -137,7 +137,6 @@ function CreateForm(props: Props) {
         && formValue.addInvoice.values) {
         editInvoice();
       }
-      console.log(props);
     },
     [props.formValue.addInvoice]
   );
@@ -145,7 +144,7 @@ function CreateForm(props: Props) {
   return (
     <>
       {/*  Redirect when EMPTY invoices */}
-      {!props.invoice && <Redirect to="/invoices/" />}
+      {props.invoicesState.ids.length === 0 && <Redirect to="/invoices/" />}
       <form
         className='create-form'
         onSubmit={submitForm}

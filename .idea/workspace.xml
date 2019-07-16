@@ -19,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/containers/Invoices/CreateInvoice/CreateForm/CreateForm.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="147" column="44" selection-start-line="147" selection-start-column="44" selection-end-line="147" selection-end-column="44" />
+            <state relative-caret-position="98">
+              <caret line="138" column="7" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="7" />
               <folding>
                 <element signature="e#0#59#0" expanded="true" />
               </folding>
@@ -279,18 +279,18 @@
       <workItem from="1562924031682" duration="19720000" />
       <workItem from="1563017667795" duration="446000" />
       <workItem from="1563174410284" duration="26904000" />
-      <workItem from="1563260348916" duration="24916000" />
+      <workItem from="1563260348916" duration="25428000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="259941000" />
+    <option name="totallyTimeSpent" value="260453000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="977" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19957873" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19957873" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -303,7 +303,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
-      <window_info anchor="bottom" x="3" y="252" width="1360" height="224" id="Terminal" order="9" visible="true" weight="0.18644068" />
+      <window_info active="true" anchor="bottom" x="3" y="252" width="1360" height="224" id="Terminal" order="9" visible="true" weight="0.18644068" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -655,8 +655,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/containers/Invoices/CreateInvoice/CreateForm/CreateForm.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="147" column="44" selection-start-line="147" selection-start-column="44" selection-end-line="147" selection-end-column="44" />
+        <state relative-caret-position="98">
+          <caret line="138" column="7" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="7" />
           <folding>
             <element signature="e#0#59#0" expanded="true" />
           </folding>
