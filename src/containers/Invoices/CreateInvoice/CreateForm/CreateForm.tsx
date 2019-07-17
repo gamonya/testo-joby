@@ -98,7 +98,7 @@ function CreateForm(props: Props) {
         setErrors('');
         setIsError(false);
       }
-      console.log(formValue.addInvoice.values);
+
       if (!isError) {
         props.startSave();
       }

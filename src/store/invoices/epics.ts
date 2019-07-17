@@ -6,14 +6,13 @@ import invoicesService from '../../shared/services/invoicesService';
 import { from, of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
 
-
-export const fetchInvoicesEpic: Epic<ActionTypeUnion, any> = (action$) => {
+export const fetchInvoicesEpic: Epic<ActionTypeUnion, ActionTypeUnion> = (action$) => {
   return action$.pipe(
     ofType(ActionTypes.FETCH_INVOICES_START),
-    mergeMap((): any => {
+    mergeMap(() => {
       return from(invoicesService.fetchInvoices()).pipe(
         map((res: any) => Actions.fetchInvoicesSuccess(res)),
-        catchError((err): any => of(Actions.fetchInvoicesError(`invoices: ${err}`)))
+        catchError((err: string) => of(Actions.fetchInvoicesError(`invoices: ${err}`)))
       );
     })
   );
@@ -92,8 +91,6 @@ export const startUpdate: Epic<ActionTypeUnion, any> = (action$, state) => {
             items: editedResults
           }));
         }
-
-
       }
     })
   );
