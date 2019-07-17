@@ -38,7 +38,7 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  updateInvoice: (id: number, payload: Invoices) => dispatch(Actions.updateInvoice(id, payload)),
+  updateInvoice: (id: string, payload: Invoices) => dispatch(Actions.updateInvoice(id, payload)),
   invoiceSaved: (payload: boolean) => dispatch(Actions.invoiceSaved(payload)),
   startSave: () => dispatch(Actions.startSave()),
   startUpdate: (payload: number) => dispatch(Actions.startUpdate(payload))
@@ -173,7 +173,7 @@ function CreateForm(props: Props) {
                 </tr>
                 {/* TASKS FROM INVOICE  */}
 
-                {props.invoice && props.endsUrl && props.invoice.items.map((item: InvoiceItems) => {
+                {props.invoice && props.endsUrl && props.invoice.items && props.invoice.items.map((item: any) => {
                   return (
                     <tr key={item.id}>
                       <td>

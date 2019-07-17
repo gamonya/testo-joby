@@ -1,15 +1,15 @@
 export interface Customers {
-    id: number,
+    id: string,
     name: string,
     address: string,
-    phone: string
+    phone: string,
 }
 
 export interface CustomersState {
    customers: {
-     [id: number]: Customers
+     [id: string]: Customers
    },
-  ids: number[],
+  ids: string[],
   error: string | null,
   isLoading: boolean
 }

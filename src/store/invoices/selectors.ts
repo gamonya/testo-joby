@@ -16,7 +16,7 @@ export const getActiveInvoicesCount = createSelector(
 );
 
 export const getInvoiceById = createSelector(
- [getInvoiceState, getInvoices],
+  [getInvoiceState, getInvoices],
   (state: InvoiseState) => state.invoices[state.currentIdInvoice]
 );
 
@@ -36,8 +36,8 @@ export const getCurrentInvoiceId = createSelector(
 export const getEditedQtyState = createSelector(
   getInvoiceState,
   (state: InvoiseState) => {
-    if (state.invoices[state.currentIdInvoice]) {
-      let result = state.invoices[state.currentIdInvoice].items.map((item: InvoiceItems) => {
+    if (state.invoices[state.currentIdInvoice] && state.invoices[state.currentIdInvoice].items) {
+      let result = state.invoices[state.currentIdInvoice].items.map((item: any) => {
         return { [item.id]: item.quantity };
       });
       return result.reduce((acc: any, item: any) => {
@@ -45,7 +45,7 @@ export const getEditedQtyState = createSelector(
           ...acc,
           [Number(Object.keys(item))]: item[Number(Object.keys(item))]
         };
-      });
+      }, []);
     }
   }
 );
@@ -53,8 +53,8 @@ export const getEditedQtyState = createSelector(
 export const getEditedProductsState = createSelector(
   getInvoiceState,
   (state: InvoiseState) => {
-    if (state.invoices[state.currentIdInvoice]) {
-      let result = state.invoices[state.currentIdInvoice].items.map((item: InvoiceItems) => {
+    if (state.invoices[state.currentIdInvoice] && state.invoices[state.currentIdInvoice].items) {
+      let result = state.invoices[state.currentIdInvoice].items.map((item: any) => {
         return { [item.id]: item.product_id };
       });
       return result.reduce((acc: any, item: any) => {
@@ -62,7 +62,7 @@ export const getEditedProductsState = createSelector(
           ...acc,
           [Number(Object.keys(item))]: item[Number(Object.keys(item))]
         };
-      });
+      }, []);
     }
   }
 );

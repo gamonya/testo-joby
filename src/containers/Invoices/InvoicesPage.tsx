@@ -22,11 +22,11 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setInvoiceId: (id: number) => dispatch(Actions.setCurrentIdInvoice(id)),
+  setInvoiceId: (id: string) => dispatch(Actions.setCurrentIdInvoice(id)),
   fetchInvoices: () => dispatch(Actions.fetchInvoicesStart()),
   fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
   fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart()),
-  removeInvoice: (id: number) => dispatch(Actions.removeInvoice(id))
+  removeInvoice: (id: string) => dispatch(Actions.removeInvoice(id))
 });
 
 type Props =
@@ -44,17 +44,17 @@ class InvoicesPage extends PureComponent<Props, {}> {
     this.props.fetchProducts();
   }
 
-  toView = (id: number) => {
+  toView = (id: string) => {
     this.props.setInvoiceId(id);
     this.props.history.push(`/invoice/${id}/view/`);
   };
 
-  toEdit = (id: number) => {
+  toEdit = (id: string) => {
     this.props.setInvoiceId(id);
     this.props.history.push(`/invoice/${id}/edit`);
   };
 
-  removeInvoice = (id: number) => {
+  removeInvoice = (id: string) => {
     if(window.confirm('Are you sure you want to delete an invoice?')) {
       this.props.removeInvoice(id);
     }
@@ -80,7 +80,7 @@ class InvoicesPage extends PureComponent<Props, {}> {
           </tr>
           {!isLoadingCustomer && invoices.map((item) => {
             return (
-              <tr key={item.id.toString()}>
+              <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{customer.customers[item.customer_id].name}</td>
                 <td>{item.discount}</td>

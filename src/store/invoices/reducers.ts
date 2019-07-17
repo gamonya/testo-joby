@@ -4,7 +4,7 @@ import { omit } from 'lodash';
 
 
 const initialState: InvoiseState = {
-  currentIdInvoice: 1,
+  currentIdInvoice: '',
   ids: [],
   isLoading: true,
   error: null,
@@ -19,12 +19,13 @@ export function reducer(
 ): InvoiseState {
   switch (action.type) {
     case ActionTypes.FETCH_INVOICES_SUCCESS: {
-      const invoices = action.payload.reduce((acc, invoice) => ({
+      const invoices = action.payload.reduce((acc, invoice) => {
+        return {
         ...acc,
         [invoice.id]: invoice,
-      }), state.invoices);
+      }}, state.invoices);
 
-      const ids = Object.keys(invoices).map(Number);
+      const ids = Object.keys(invoices);
 
       return {
         ...state,
@@ -59,7 +60,7 @@ export function reducer(
     }
     case ActionTypes.REMOVE_INVOICE: {
       const invoices = omit(state.invoices, action.payload);
-      const ids = Object.keys(invoices).map(Number);
+      const ids = Object.keys(invoices);
       return {
         ...state,
         ids,

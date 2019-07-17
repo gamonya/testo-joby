@@ -1,14 +1,14 @@
 export interface Products {
-  id: number;
+  id: string;
   name: string;
   price: number;
 }
 
 export interface ProductsState {
   products: {
-    [id: number]: Products
+    [id: string]: Products
   },
   error: string | null,
-  ids: number[],
+  ids: string[],
   isLoading: boolean
 }

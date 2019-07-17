@@ -26,7 +26,7 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setInvoiceId: (id: number) => dispatch(Actions.setCurrentIdInvoice(id)),
+  setInvoiceId: (id: string) => dispatch(Actions.setCurrentIdInvoice(id)),
   fetchInvoices: () => dispatch(Actions.fetchInvoicesStart()),
   fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
   fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart())
@@ -49,7 +49,7 @@ class MainPage extends React.PureComponent<Props, {}> {
   }
 
   // Вынести в компонент кнопку
-  toView = (id: number) => {
+  toView = (id: string) => {
     this.props.history.push(`/invoice/${id}/view/`);
     this.props.setInvoiceId(id);
   };
@@ -74,7 +74,7 @@ class MainPage extends React.PureComponent<Props, {}> {
           </tr>
           {invoices.map((item) => {
             return (
-              <tr key={item.id.toString()}>
+              <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{customers.customers[item.customer_id].name}</td>
                 <td>{item.discount}</td>

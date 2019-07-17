@@ -19,7 +19,7 @@ export function reducer(
         [customer.id]: customer,
       }), state.customers);
 
-      const ids = Object.keys(customers).map(Number);
+      const ids = Object.keys(customers);
 
       return {
         ...state,

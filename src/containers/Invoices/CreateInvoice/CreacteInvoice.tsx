@@ -82,7 +82,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
         keys.map((item: number): void => {
           res.push(this.props.productsState.products[values.itemsGroup[item]].price * values.qtyGroup[item]);
         });
-        const total = res.reduce((a: number, b: number) => a + b);
+        const total = res.reduce((a: number, b: number) => a + b,[]);
         return total;
       }
     }
@@ -90,9 +90,9 @@ class CreacteInvoice extends PureComponent<Props, State> {
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState:  Readonly<State>) {
 
-    this.setState({
-      totalPrice: this.setTotalPrice()
-    });
+    // this.setState({
+    //   totalPrice: this.setTotalPrice()
+    // });
 
     //
     const { values } = this.props.formValue.addInvoice;
@@ -146,7 +146,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
           </div>}
           {/*  EDIT PAGE */}
           {endsUrl && <div className='total-count'>
-            {this.props.getInvoiceById &&
+            {this.props.getInvoiceById && this.props.getInvoiceById.discount &&
             discountCalculator(this.state.totalPrice, this.props.getInvoiceById.discount) || 0
             }
           </div>}

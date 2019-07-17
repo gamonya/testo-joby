@@ -44,7 +44,7 @@ class ProductsPage extends Component<Props, {}> {
           </tr>
           {products.map((item) => {
             return (
-              <tr key={item.id.toString()}>
+              <tr key={item.id}>
                 <td>{item.name}</td>
                 <td>{item.price} $</td>
               </tr>

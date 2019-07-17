@@ -1,24 +1,33 @@
 export interface Invoices {
-  id: number,
-  customer_id: number,
-  discount: number,
+  id: string,
+  customer_id: string,
+  discount?: number,
+  total: number,
+  items: InvoiceItems[]
+}
+
+//  Временнно
+export interface NewInvoice {
+  id: string,
+  customer_id: string,
+  discount?: number,
   total: number,
   items: InvoiceItems[]
 }
 
 export interface InvoiceItems {
-  id: number,
-  invoice_id: number,
-  product_id: number,
+  id?: string,
+  invoice_id: string,
+  product_id: string,
   quantity: number
 }
 
 export interface InvoiseState {
-  currentIdInvoice: number,
+  currentIdInvoice: string,
   invoices: {
-    [id: number]: Invoices
+    [id: string]: Invoices
   },
-  ids: number[],
+  ids: string[],
   isLoading: boolean,
   error: string | null,
   isInvoiceSaved: boolean,

@@ -44,7 +44,7 @@ class CustomersPage extends PureComponent<Props, {}> {
           </tr>
           {customers.map((item) => {
             return (
-              <tr key={item.id.toString()}>
+              <tr key={item.id}>
                 <td>{item.name}</td>
                 <td>{item.address}</td>
                 <td>{item.phone}</td>
