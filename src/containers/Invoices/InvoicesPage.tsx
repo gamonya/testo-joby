@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { ComponentClass, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import './invoices.css';
@@ -106,4 +106,4 @@ class InvoicesPage extends PureComponent<Props, {}> {
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps)
-)(InvoicesPage) as any;
+)(InvoicesPage) as ComponentClass;

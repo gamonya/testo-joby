@@ -23,15 +23,6 @@ type Props =
 
 
 class ViewPage extends PureComponent<Props, {}> {
-  public total = () => {
-    let i = [];
-    for(let item of this.props.invoice.items) {
-      i.push(this.props.products.products[item.product_id].price * item.quantity)
-    }
-    const res = i.reduce((a, b) => a + b);
-   return discountCalculator(res, this.props.invoice.discount)
-  };
-
   public prodItems = () => {
     const { products } = this.props;
    return this.props.invoice.items.map(item => {
@@ -67,7 +58,7 @@ class ViewPage extends PureComponent<Props, {}> {
                 <hr/>
                 <div className='product-total'>
                   <div className='total-title'>total</div>
-                  <div className='total-count'>${this.total()}</div>
+                  <div className='total-count'>{invoice.total}</div>
                 </div>
               </div>
             </div>
