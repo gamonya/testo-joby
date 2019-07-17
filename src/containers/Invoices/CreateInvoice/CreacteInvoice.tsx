@@ -78,8 +78,8 @@ class CreacteInvoice extends PureComponent<Props, State> {
       const values = this.props.formValue.addInvoice.values;
       if (values.itemsGroup) {
         const res: any = [];
-        const keys = Object.keys(values.itemsGroup);
-        keys.map((item: any) => {
+        const keys = Object.keys(values.itemsGroup).map(Number);
+        keys.map((item: number): void => {
           res.push(this.props.productsState.products[values.itemsGroup[item]].price * values.qtyGroup[item]);
         });
         const total = res.reduce((a: number, b: number) => a + b);
