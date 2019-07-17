@@ -10,10 +10,6 @@ import Logo from './Logo/Logo';
 import { getActiveInvoicesCount } from '../../../store/invoices/selectors';
 import { AppState } from '../../../store';
 
-interface Invoices {
-  activeInvoicesCount: number
-}
-
 // STORE PROPS
 const mapStateToProps = (state: AppState) => {
   return {
@@ -23,7 +19,6 @@ const mapStateToProps = (state: AppState) => {
 
 type Props =
   & ReturnType<typeof mapStateToProps>
-  & Invoices
   ;
 
 function Header({activeInvoicesCount}: Props) {
