@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { AppState } from '../index';
-import { InvoiseState } from './types';
+import { InvoiceItems, InvoiseState } from './types';
 
 export const getInvoiceState = (state: AppState) => state.invoices;
 
@@ -37,7 +37,7 @@ export const getEditedQtyState = createSelector(
   getInvoiceState,
   (state: InvoiseState) => {
     if (state.invoices[state.currentIdInvoice]) {
-      let result = state.invoices[state.currentIdInvoice].items.map((item: any) => {
+      let result = state.invoices[state.currentIdInvoice].items.map((item: InvoiceItems) => {
         return { [item.id]: item.quantity };
       });
       return result.reduce((acc: any, item: any) => {
@@ -54,7 +54,7 @@ export const getEditedProductsState = createSelector(
   getInvoiceState,
   (state: InvoiseState) => {
     if (state.invoices[state.currentIdInvoice]) {
-      let result = state.invoices[state.currentIdInvoice].items.map((item: any) => {
+      let result = state.invoices[state.currentIdInvoice].items.map((item: InvoiceItems) => {
         return { [item.id]: item.product_id };
       });
       return result.reduce((acc: any, item: any) => {

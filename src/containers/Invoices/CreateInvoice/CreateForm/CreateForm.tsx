@@ -7,7 +7,7 @@ import { RouteComponentProps, withRouter, Redirect } from 'react-router-dom';
 import { Products } from '../../../../store/products/types';
 import { Customers } from '../../../../store/customers/types';
 import { Dispatch } from 'redux';
-import { Invoices } from '../../../../store/invoices/types';
+import { InvoiceItems, Invoices } from '../../../../store/invoices/types';
 import { Actions } from '../../../../store/invoices/actions';
 import { getEditedQtyState, getEditedProductsState, getEditedCustomerState, getInvoiceState } from '../../../../store/invoices/selectors';
 import { AppState } from '../../../../store';
@@ -173,7 +173,7 @@ function CreateForm(props: Props) {
                 </tr>
                 {/* TASKS FROM INVOICE  */}
 
-                {props.invoice && props.endsUrl && props.invoice.items.map((item: any) => {
+                {props.invoice && props.endsUrl && props.invoice.items.map((item: InvoiceItems) => {
                   return (
                     <tr key={item.id}>
                       <td>
@@ -184,7 +184,7 @@ function CreateForm(props: Props) {
 
                             component="select"
                           >
-                            {props.products.map((items: any) => {
+                            {props.products.map((items: Products) => {
                                 return (
                                   <option
                                     key={items.id}
