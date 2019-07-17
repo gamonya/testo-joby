@@ -1,9 +1,9 @@
 import { Epic, ofType, ActionsObservable, StateObservable } from 'redux-observable';
 import { uniqueId } from 'lodash';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, tap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
-import { from, Observable, of } from 'rxjs';
+import { from, of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
 import { AppState } from '../index';
 
@@ -59,8 +59,8 @@ export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: 
   return action$.pipe(
     ofType(ActionTypes.START_UPDATE),
     mergeMap((action: any): any => {
-
       if (state.value.form.addInvoice.values) {
+
         const { values } = state.value.form.addInvoice;
         const invoice = state.value.invoices.invoices[state.value.invoices.currentIdInvoice];
         const editedResults = [];

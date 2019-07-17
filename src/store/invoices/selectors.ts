@@ -16,12 +16,12 @@ export const getActiveInvoicesCount = createSelector(
 );
 
 export const getInvoiceById = createSelector(
-  getInvoiceState,
+ [getInvoiceState, getInvoices],
   (state: InvoiseState) => state.invoices[state.currentIdInvoice]
 );
 
 export const genereteNextIdInvoice = createSelector(
-  getInvoiceState,
+  [getInvoiceState, getInvoices],
   (state: InvoiseState) => {
     const invoiceIdsArray = Object.keys(state.invoices).map(Number);
     return Math.max.apply(null, invoiceIdsArray) + 1;

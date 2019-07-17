@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentClass } from 'react';
 import { connect } from 'react-redux';
 
 import { compose, Dispatch } from 'redux';
@@ -95,4 +95,4 @@ class MainPage extends React.PureComponent<Props, {}> {
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps)
-)(MainPage) as any;
+)(MainPage) as ComponentClass;
