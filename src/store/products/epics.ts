@@ -4,7 +4,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 import productsService from '../../shared/services/productsService';
 import { from, of } from 'rxjs';
 
-export const fetchProductsEpic: Epic<ActionTypeUnion, ActionTypeUnion> = (action$) => {
+export const fetchProductsEpic: Epic<ActionTypeUnion> = (action$) => {
   return action$.pipe(
     ofType(ActionTypes.FETCH_PRODUCTS_START),
     mergeMap(() => {

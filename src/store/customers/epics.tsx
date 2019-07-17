@@ -5,7 +5,7 @@ import CustomersService from '../../shared/services/customersService';
 import { from, of } from 'rxjs';
 
 
-export const fetchCustomersEpic: Epic<ActionTypeUnion, ActionTypeUnion> = (action$) => {
+export const fetchCustomersEpic: Epic<ActionTypeUnion> = (action$) => {
   return action$.pipe(
     ofType(ActionTypes.FETCH_CUSTOMERS_START),
     mergeMap(() => {

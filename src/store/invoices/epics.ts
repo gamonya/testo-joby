@@ -1,12 +1,14 @@
-import { Epic, ofType } from 'redux-observable';
+import { Epic, ofType, ActionsObservable, StateObservable } from 'redux-observable';
 import { uniqueId } from 'lodash';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
-import { from, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
+import { AppState } from '../index';
 
-export const fetchInvoicesEpic: Epic<ActionTypeUnion, ActionTypeUnion> = (action$) => {
+
+export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
   return action$.pipe(
     ofType(ActionTypes.FETCH_INVOICES_START),
     mergeMap(() => {
@@ -19,7 +21,7 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion, ActionTypeUnion> = (action
 };
 
 
-export const saveInvoice: Epic<ActionTypeUnion, any> = (action$, state) => {
+export const saveInvoice= (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.START_SAVE),
     mergeMap((): any => {
@@ -30,18 +32,18 @@ export const saveInvoice: Epic<ActionTypeUnion, any> = (action$, state) => {
           const invoiceIdsArray = Object.keys(value.invoices.invoices).map(Number);
           const nextID = Math.max.apply(null, invoiceIdsArray) + 1;
           // PRICE
-          const price = value.products.products[Number(value.form.addInvoice.values.product)].price * Number(value.form.addInvoice.values.qty);
+          const price = value.products.products[Number(value!.form.addInvoice.values!.product)].price * Number(value.form.addInvoice.values!.qty);
           // INVOICE OBJECT
           const invoice = {
             id: nextID,
-            customer_id: Number(value.form.addInvoice.values.customer),
-            discount: Number(value.form.addInvoice.values.discount),
-            total: discountCalculator(price, Number(value.form.addInvoice.values.discount)),
+            customer_id: Number(value.form.addInvoice.values!.customer),
+            discount: Number(value.form.addInvoice.values!.discount),
+            total: discountCalculator(price, Number(value.form.addInvoice.values!.discount)),
             items: [{
               id: Number(uniqueId()),
               invoice_id: nextID,
-              product_id: Number(value.form.addInvoice.values.product),
-              quantity: Number(value.form.addInvoice.values.qty)
+              product_id: Number(value.form.addInvoice.values!.product),
+              quantity: Number(value.form.addInvoice.values!.qty)
             }]
           };
           return of(Actions.addInvoice(invoice), Actions.invoiceSaved(true), Actions.invoiceSaved(false));
@@ -53,7 +55,7 @@ export const saveInvoice: Epic<ActionTypeUnion, any> = (action$, state) => {
   );
 };
 
-export const startUpdate: Epic<ActionTypeUnion, any> = (action$, state) => {
+export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.START_UPDATE),
     mergeMap((action: any): any => {
