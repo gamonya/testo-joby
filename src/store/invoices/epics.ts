@@ -1,6 +1,6 @@
 import { Epic, ofType, ActionsObservable, StateObservable } from 'redux-observable';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { mergeMap, map, catchError, switchMap, tap } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
 import { of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
@@ -34,7 +34,7 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
 };
 
 
-export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
+export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>) => {
   return action$.pipe(
     ofType(ActionTypes.FETCH_INVOICE_ITEMS),
     switchMap((action: any): any => {
@@ -131,6 +131,7 @@ export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: 
             product_id: values.product
           });
         }
+        console.log(editedResults)
 
         if (state.value.form) {
           return of(Actions.updateInvoice(invoice.id, {

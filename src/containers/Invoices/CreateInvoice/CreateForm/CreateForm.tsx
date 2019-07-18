@@ -7,7 +7,7 @@ import { RouteComponentProps, withRouter, Redirect } from 'react-router-dom';
 import { Products } from '../../../../store/products/types';
 import { Customers } from '../../../../store/customers/types';
 import { Dispatch } from 'redux';
-import { InvoiceItems, Invoices } from '../../../../store/invoices/types';
+import { Invoices } from '../../../../store/invoices/types';
 import { Actions } from '../../../../store/invoices/actions';
 import { getEditedQtyState, getEditedProductsState, getEditedCustomerState, getInvoiceState, getInvoiceItems } from '../../../../store/invoices/selectors';
 import { AppState } from '../../../../store';
@@ -109,7 +109,7 @@ function CreateForm(props: Props) {
   };
 
   const editInvoice = () => {
-    // props.startUpdate(props.total);
+    props.startUpdate(props.total);
   };
 
   const submitForm = (e: React.SyntheticEvent) => {

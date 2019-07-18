@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { AppState } from '../index';
-import { InvoiceItems, InvoiseState } from './types';
+import { InvoiseState } from './types';
 
 export const getInvoiceState = (state: AppState) => state.invoices;
 

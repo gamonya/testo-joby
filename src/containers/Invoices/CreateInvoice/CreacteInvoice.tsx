@@ -65,7 +65,11 @@ class CreacteInvoice extends PureComponent<Props, State> {
   public componentDidMount(): void {
     this.props.fetchProducts();
     this.props.fetchCustomers();
-    this.props.fetchInvoiceItems(this.props.currentIdInvoice);
+
+    if(this.props.getInvoiceById) {
+      this.props.fetchInvoiceItems(this.props.getInvoiceById.id);
+    }
+
 
 
     this.setState({
@@ -90,11 +94,6 @@ class CreacteInvoice extends PureComponent<Props, State> {
   };
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState:  Readonly<State>) {
-
-    // this.setState({
-    //   totalPrice: this.setTotalPrice()
-    // });
-
     //
     const { values } = this.props.formValue.addInvoice;
     if (prevState.url !== this.props.match.url) {
@@ -104,6 +103,9 @@ class CreacteInvoice extends PureComponent<Props, State> {
     }
 
     if (prevProps.formValue.addInvoice !== this.props.formValue.addInvoice) {
+      this.setState({
+        totalPrice: this.setTotalPrice()
+      });
       // UPDATE TOTAL PRICE
       this.props.setCurrentTotal(this.setTotalPrice());
 
