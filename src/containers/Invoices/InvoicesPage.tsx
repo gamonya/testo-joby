@@ -2,7 +2,7 @@ import React, { ComponentClass, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import './invoices.css';
-import { getInvoices } from '../../store/invoices/selectors';
+import { getInvoiceError, getInvoices } from '../../store/invoices/selectors';
 import { getCustomersError, getCustomersState, isLoadingCustomer } from '../../store/customers/selectors';
 import { AppState } from '../../store';
 import { Dispatch, compose } from 'redux';
@@ -16,6 +16,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     invoices: getInvoices(state),
     customer: getCustomersState(state),
+    invoiceError: getInvoiceError(state),
     // customers
     customersError: getCustomersError(state),
     isLoadingCustomer: isLoadingCustomer(state)
@@ -26,7 +27,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchInvoices: () => dispatch(Actions.fetchInvoicesStart()),
   fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
   fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart()),
-  removeInvoice: (id: string) => dispatch(Actions.removeInvoice(id))
+  startDeleteInvoice: (id: string) => dispatch(Actions.startDeleteInvoice(id)),
 });
 
 type Props =
@@ -56,19 +57,19 @@ class InvoicesPage extends PureComponent<Props, {}> {
 
   removeInvoice = (id: string) => {
     if(window.confirm('Are you sure you want to delete an invoice?')) {
-      this.props.removeInvoice(id);
+      this.props.startDeleteInvoice(id);
     }
 
   };
 
   public render() {
-    const { invoices, customer, isLoadingCustomer, customersError } = this.props;
+    const { invoices, customer, isLoadingCustomer, customersError, invoiceError } = this.props;
     return (
       <div className='invoices'>
         {isLoadingCustomer && <h1>Loading ...</h1>}
         {/*  ERROR  CONTENT */}
         {customersError && <h2>{customersError}</h2>}
-
+        {invoiceError && <h2>{invoiceError}</h2>}
         <table className='table'>
           <tbody>
           <tr className='table-title'>

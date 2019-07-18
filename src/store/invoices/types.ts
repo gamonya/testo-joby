@@ -6,14 +6,6 @@ export interface Invoices {
   items: InvoiceItems[]
 }
 
-//  Временнно
-export interface NewInvoice {
-  id: string,
-  customer_id: string,
-  discount?: number,
-  total: number,
-  items: InvoiceItems[]
-}
 
 export interface InvoiceItems {
   id?: string,
@@ -32,4 +24,17 @@ export interface InvoiseState {
   error: string | null,
   isInvoiceSaved: boolean,
   currentTotalCount: number
+}
+
+// CRUD INTERFACE
+export interface NewInvoice {
+  customer_id: string,
+  discount: number,
+  total: number,
+}
+
+export interface NewInvoiceItems {
+  invoice_id: string,
+  product_id: string,
+  quantity: number
 }

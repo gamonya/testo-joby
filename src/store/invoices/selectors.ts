@@ -5,6 +5,9 @@ import { InvoiceItems, InvoiseState } from './types';
 
 export const getInvoiceState = (state: AppState) => state.invoices;
 
+export const getInvoiceError = (state: AppState) => state.invoices.error
+
+
 export const getInvoices = createSelector(
   [getInvoiceState],
   (state: InvoiseState) => Object.values(state.invoices)

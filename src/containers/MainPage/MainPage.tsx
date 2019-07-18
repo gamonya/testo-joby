@@ -7,7 +7,7 @@ import { Actions } from '../../store/invoices/actions';
 import { Actions as ActionsCustomers } from '../../store/customers/actions';
 import { Actions as ActionsProducts } from '../../store/products/actions';
 
-import { getInvoices } from '../../store/invoices/selectors';
+import { getInvoiceError, getInvoices } from '../../store/invoices/selectors';
 import { getCustomersState } from '../../store/customers/selectors';
 import { AppState } from '../../store';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
@@ -19,6 +19,7 @@ const mapStateToProps = (state: AppState) => {
   return {
     invoices: getInvoices(state),
     customers: getCustomersState(state),
+    invoiceError: getInvoiceError(state),
     // customers
     customersError: getCustomersError(state),
     isLoadingCustomer: isLoadingCustomer(state),
@@ -55,12 +56,13 @@ class MainPage extends React.PureComponent<Props, {}> {
   };
 
   public render() {
-    const { invoices, customers, customersError, isLoadingCustomer } = this.props;
+    const { invoices, customers, customersError, isLoadingCustomer, invoiceError } = this.props;
     return (
       <>
         {isLoadingCustomer && <h1>Loading ...</h1>}
         {/*  ERROR  CONTENT */}
         {customersError && <h2>{customersError}</h2>}
+        {invoiceError && <h2>{invoiceError}</h2>}
         {!isLoadingCustomer && <table className='table'>
           <tbody>
           <tr className='table-title'>

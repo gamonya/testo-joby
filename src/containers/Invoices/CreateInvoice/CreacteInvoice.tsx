@@ -107,8 +107,9 @@ class CreacteInvoice extends PureComponent<Props, State> {
       this.props.setCurrentTotal(this.setTotalPrice());
 
       if (values !== undefined && this.props.products !== undefined && values.product !== undefined && values.qty !== undefined) {
+
         this.setState({
-          price: this.props.products[Number(values.product) - 1].price * Number(values.qty)
+          price: this.props.productsState.products[values.product].price * Number(values.qty)
         });
 
         if (values.discount !== undefined) {
@@ -125,7 +126,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
     const endsUrl = this.state.url.endsWith('edit');
     return (
       <div className='create-container'>
-        {this.state.url === '/invoices/create/' && <h4 className='viev-title-id'>Invoice #{this.state.nextId}</h4>}
+        {this.state.url === '/invoices/create/' && <h4 className='viev-title-id'>New Invoice</h4>}
         {endsUrl && <h4 className='viev-title-id'>Invoice #{this.props.currentIdInvoice}</h4>}
         <CreateForm
           customers={customers}

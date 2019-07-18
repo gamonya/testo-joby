@@ -34,6 +34,12 @@ export function reducer(
         invoices
       }
     }
+    case ActionTypes.FETCH_INVOICES_FAILURE: {
+     return {
+       ...state,
+       error: action.payload
+     }
+    }
     case ActionTypes.ADD_INVOICE: {
       return {
         ...state,

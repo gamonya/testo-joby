@@ -70,7 +70,7 @@ function CreateForm(props: Props) {
       && formValue.addInvoice.values
       && formValue.addInvoice.values.product
       && formValue.addInvoice.values.qty) {
-      setPrice(props.products[Number(formValue.addInvoice.values.product) - 1].price * Number(formValue.addInvoice.values.qty));
+      setPrice(props.productState.products[formValue.addInvoice.values.product].price * Number(formValue.addInvoice.values.qty));
     }
 
   };

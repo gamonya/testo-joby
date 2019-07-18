@@ -1,8 +1,8 @@
 import { Epic, ofType, ActionsObservable, StateObservable } from 'redux-observable';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap, tap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
-import { from, of } from 'rxjs';
+import { of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
 import { AppState } from '../index';
 
@@ -11,7 +11,7 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
   return action$.pipe(
     ofType(ActionTypes.FETCH_INVOICES_START),
     switchMap(() => {
-      return from(invoicesService.fetchInvoices()).pipe(
+      return invoicesService.fetchInvoices().pipe(
         map((res: any) => {
           const invoices: any = [];
           res.map((items: any) => {
@@ -23,9 +23,9 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
               discount: items.discount,
               total: items.total,
               items: items.items
-            })
+            });
           });
-          return Actions.fetchInvoicesSuccess(invoices)
+          return Actions.fetchInvoicesSuccess(invoices);
         }),
         catchError((err: string) => of(Actions.fetchInvoicesError(`invoices: ${err}`)))
       );
@@ -34,39 +34,50 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
 };
 
 
-export const saveInvoice= (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
+export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.START_SAVE),
     mergeMap((): any => {
       if (state.value.form.addInvoice.values) {
         if (state.value.form.addInvoice.values.product) {
           const { value } = state;
-          // NEXT ID
-          const invoiceIdsArray = Object.keys(value.invoices.invoices).map(Number);
-          const nextID = Math.max.apply(null, invoiceIdsArray) + 1;
           // PRICE
-          const price = value.products.products[Number(value!.form.addInvoice.values!.product)].price * Number(value.form.addInvoice.values!.qty);
-          // INVOICE OBJECT
+          const price = value.products.products[value!.form.addInvoice.values!.product].price * Number(value.form.addInvoice.values!.qty);
           const invoice = {
-            id: 'string',
             customer_id: value.form.addInvoice.values!.customer.toString(),
             discount: Number(value.form.addInvoice.values!.discount),
-            total: discountCalculator(price, Number(value.form.addInvoice.values!.discount)) || 0,
-            items: [{
-              id: 'das',
-              invoice_id: nextID.toString(),
-              product_id: value.form.addInvoice.values!.product,
-              quantity: value.form.addInvoice.values!.qty
-            }]
+            total: discountCalculator(price, Number(value.form.addInvoice.values!.discount))
           };
-          return of(Actions.addInvoice(invoice), Actions.invoiceSaved(true), Actions.invoiceSaved(false));
-        } else {
-          return of(Actions.invoiceSaved(false));
+          // SAVE INVOICE
+          return invoicesService.addInvoice(invoice).pipe(
+            mergeMap(((res: any): any => {
+              const items = [{
+                invoice_id: res.response._id,
+                product_id: value.form.addInvoice.values!.product,
+                quantity: Number(value.form.addInvoice.values!.qty)
+              }];
+              // SAVE INVOICE ITEMS
+              return invoicesService.addInvoiceItem(res.response._id, items).pipe(
+                map((value) => {
+                  const invoice = {
+                    id: res.response._id,
+                    customer_id: res.response.customer_id,
+                    discount: res.response.discount,
+                    total: res.response.total,
+                    items: value.response
+                  };
+                  console.log(invoice);
+                  return Actions.addInvoice(invoice);
+                })
+              );
+            }))
+          );
         }
       }
     })
   );
 };
+
 
 export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
@@ -107,6 +118,20 @@ export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: 
           }));
         }
       }
+    })
+  );
+};
+
+export const deleteInvoice = (action$: ActionsObservable<ActionTypeUnion>) => {
+  return action$.pipe(
+    ofType(ActionTypes.START_DELETE_INVOICE),
+    mergeMap((action: any): any => {
+      return invoicesService.deleteInvoice(action.payload).pipe(
+        map((res) => {
+          return Actions.removeInvoice(res.response._id);
+        }),
+        catchError(() => of(Actions.fetchInvoicesError(`invoices delete error`)))
+      );
     })
   );
 };
