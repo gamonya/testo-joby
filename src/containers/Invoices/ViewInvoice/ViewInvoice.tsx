@@ -1,33 +1,45 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { getInvoiceById } from '../../../store/invoices/selectors';
+import { getInvoiceById, getInvoiceItems } from '../../../store/invoices/selectors';
 import { getCustomers, getCustomersState } from '../../../store/customers/selectors';
 import { getProductState } from '../../../store/products/selectors';
 import { AppState } from '../../../store';
 
 import './viewPage.css';
+import { Actions } from '../../../store/invoices/actions';
+import { Dispatch } from 'redux';
 
 // STORE PROPS
 const mapStateToProps = (state: AppState) => {
   return {
     invoice: getInvoiceById(state),
+    items: getInvoiceItems(state),
     customerState: getCustomersState(state),
     customer: getCustomers(state),
     products: getProductState(state)
   };
 };
 
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  fetchInvoiceItems: () => dispatch(Actions.fetchInvoiceItems())
+});
+
 type Props =
   & ReturnType<typeof mapStateToProps>
+  & ReturnType<typeof mapDispatchToProps>
   ;
 
 
 class ViewPage extends PureComponent<Props, {}> {
 
+  public componentDidMount(): void {
+    this.props.fetchInvoiceItems()
+  }
+
   public prodItems = () => {
-    const { products } = this.props;
-    if (this.props.invoice.items) {
-      return this.props.invoice.items.map((item: any) => {
+    const { products, items } = this.props;
+    if (items) {
+      return items.map((item: any) => {
         return (
           <tr key={item.id}>
             <td className='view-text-content'>{products.products[item.product_id].name}</td>
@@ -78,4 +90,4 @@ class ViewPage extends PureComponent<Props, {}> {
 
 }
 
-export default connect(mapStateToProps)(ViewPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewPage);

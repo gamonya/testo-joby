@@ -41,7 +41,7 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart()),
   fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
-  fetchInvoiceItems: (id: string) => dispatch(Actions.fetchInvoiceItems(id)),
+  fetchInvoiceItems: () => dispatch(Actions.fetchInvoiceItems()),
   setCurrentTotal: (payload: number) => dispatch(Actions.setCurrentTotalCount(payload))
 });
 
@@ -65,7 +65,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
   public componentDidMount(): void {
     this.props.fetchProducts();
     this.props.fetchCustomers();
-    this.props.fetchInvoiceItems(this.props.currentIdInvoice);
+    this.props.fetchInvoiceItems();
 
 
     this.setState({
