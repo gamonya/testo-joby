@@ -34,4 +34,8 @@ export default class InvoicesService {
       body: payload
     })
   }
+
+  static getInvoiceItems (id: string) {
+    return ajax(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id}/items`)
+  }
 }

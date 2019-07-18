@@ -1,14 +1,14 @@
 export interface Invoices {
   id: string,
   customer_id: string,
-  discount?: number,
+  discount: number,
   total: number,
   items: InvoiceItems[]
 }
 
 
 export interface InvoiceItems {
-  id?: string,
+  id: string,
   invoice_id: string,
   product_id: string,
   quantity: number
@@ -19,6 +19,7 @@ export interface InvoiseState {
   invoices: {
     [id: string]: Invoices
   },
+  items: InvoiceItems[],
   ids: string[],
   isLoading: boolean,
   error: string | null,

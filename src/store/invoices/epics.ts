@@ -13,6 +13,7 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
     switchMap(() => {
       return invoicesService.fetchInvoices().pipe(
         map((res: any) => {
+
           const invoices: any = [];
           res.map((items: any) => {
             delete items['updatedAt'];
@@ -21,13 +22,37 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
               id: items._id,
               customer_id: items.customer_id,
               discount: items.discount,
-              total: items.total,
-              items: items.items
-            });
+              total: items.total
+            })
           });
           return Actions.fetchInvoicesSuccess(invoices);
         }),
         catchError((err: string) => of(Actions.fetchInvoicesError(`invoices: ${err}`)))
+      );
+    })
+  );
+};
+
+
+export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>) => {
+  return action$.pipe(
+    ofType(ActionTypes.FETCH_INVOICE_ITEMS),
+    switchMap((action: any): any => {
+      return invoicesService.getInvoiceItems(action.payload).pipe(
+        map((res: any) => {
+          const item: any = [];
+          res.response.map((items: any) => {
+            delete items['updatedAt'];
+            delete items['createdAt'];
+            item.push({
+              id: items._id,
+              invoice_id: items.invoice_id,
+              product_id: items.product_id,
+              quantity: items.quantity
+            })
+          });
+          return Actions.addInvoiceItems(item)
+        }),
       );
     })
   );
@@ -50,7 +75,7 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
           };
           // SAVE INVOICE
           return invoicesService.addInvoice(invoice).pipe(
-            mergeMap(((res: any): any => {
+            switchMap(((res: any): any => {
               const items = [{
                 invoice_id: res.response._id,
                 product_id: value.form.addInvoice.values!.product,
@@ -66,7 +91,6 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
                     total: res.response.total,
                     items: value.response
                   };
-                  console.log(invoice);
                   return Actions.addInvoice(invoice);
                 })
               );

@@ -1,11 +1,15 @@
 import { action, ActionType } from 'typesafe-actions';
-import { Invoices, NewInvoice } from './types';
+import { Invoices, InvoiceItems } from './types';
 
 
 export enum ActionTypes {
   FETCH_INVOICES_START = 'FETCH_INVOICES_START',
   FETCH_INVOICES_SUCCESS = 'FETCH_INVOICES_SUCCESS',
   FETCH_INVOICES_FAILURE = 'FETCH_INVOICES_FAILURE',
+
+  FETCH_INVOICE_ITEMS= 'FETCH_INVOICE_ITEMS',
+  ADD_INVOICE_ITEMS = 'ADD_INVOICE_ITEMS',
+
   SET_CURRENT_ID_INVOICE = 'SET_CURRENT_ID_INVOICE',
   ADD_INVOICE = 'ADD_INVOICE',
   REMOVE_INVOICE = 'REMOVE_INVOICE',
@@ -14,7 +18,7 @@ export enum ActionTypes {
   START_UPDATE ='START_UPDATE',
   SET_CURRENT_TOTAL_COUNT = 'SET_CURRENT_TOTAL_COUNT',
   INVOICE_SAIVED = 'INVOICE_SAIVED',
-  START_DELETE_INVOICE = 'START_DELETE_INVOICE'
+  START_DELETE_INVOICE = 'START_DELETE_INVOICE',
 }
 
 export const Actions = {
@@ -22,6 +26,9 @@ export const Actions = {
   fetchInvoicesStart: () => action(ActionTypes.FETCH_INVOICES_START),
   fetchInvoicesSuccess: (payload: Invoices[]) => action(ActionTypes.FETCH_INVOICES_SUCCESS, payload),
   fetchInvoicesError: (payload: string) => action(ActionTypes.FETCH_INVOICES_FAILURE, payload),
+
+  fetchInvoiceItems: (id: string) => action(ActionTypes.FETCH_INVOICE_ITEMS, id),
+  addInvoiceItems: (payload: InvoiceItems[]) => action(ActionTypes.ADD_INVOICE_ITEMS, payload),
   // CRUD  ACTION
   addInvoice: (payload: Invoices) => action(ActionTypes.ADD_INVOICE, payload),
   removeInvoice: (id: string) => action(ActionTypes.REMOVE_INVOICE, id),

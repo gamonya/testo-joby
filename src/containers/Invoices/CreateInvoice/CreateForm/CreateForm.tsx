@@ -9,7 +9,7 @@ import { Customers } from '../../../../store/customers/types';
 import { Dispatch } from 'redux';
 import { InvoiceItems, Invoices } from '../../../../store/invoices/types';
 import { Actions } from '../../../../store/invoices/actions';
-import { getEditedQtyState, getEditedProductsState, getEditedCustomerState, getInvoiceState } from '../../../../store/invoices/selectors';
+import { getEditedQtyState, getEditedProductsState, getEditedCustomerState, getInvoiceState, getInvoiceItems } from '../../../../store/invoices/selectors';
 import { AppState } from '../../../../store';
 import { getProductState } from '../../../../store/products/selectors';
 import { customSelect, customInputNumber } from './customFields';
@@ -29,6 +29,8 @@ const mapStateToProps = (state: AppState) => {
     formValue: state.form,
     productState: getProductState(state),
     invoicesState: getInvoiceState(state),
+    items: getInvoiceItems(state),
+    qty: getEditedQtyState(state),
     initialValues: {
       itemsGroup: getEditedProductsState(state),
       qtyGroup: getEditedQtyState(state),
@@ -107,7 +109,7 @@ function CreateForm(props: Props) {
   };
 
   const editInvoice = () => {
-    props.startUpdate(props.total);
+    // props.startUpdate(props.total);
   };
 
   const submitForm = (e: React.SyntheticEvent) => {
@@ -129,7 +131,6 @@ function CreateForm(props: Props) {
       }
       validator();
       // auto update
-
       if (
         props.endsUrl
         && props.invoice
@@ -173,7 +174,7 @@ function CreateForm(props: Props) {
                 </tr>
                 {/* TASKS FROM INVOICE  */}
 
-                {props.invoice && props.endsUrl && props.invoice.items && props.invoice.items.map((item: any) => {
+                {props.invoice && props.endsUrl && props.items && props.items.map((item: any) => {
                   return (
                     <tr key={item.id}>
                       <td>

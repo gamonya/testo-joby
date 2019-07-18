@@ -9,6 +9,7 @@ const initialState: InvoiseState = {
   isLoading: true,
   error: null,
   invoices: {},
+  items: [],
   isInvoiceSaved: false,
   currentTotalCount: 0
 };
@@ -39,6 +40,12 @@ export function reducer(
        ...state,
        error: action.payload
      }
+    }
+    case ActionTypes.ADD_INVOICE_ITEMS: {
+      return {
+        ...state,
+        items: action.payload
+      }
     }
     case ActionTypes.ADD_INVOICE: {
       return {
