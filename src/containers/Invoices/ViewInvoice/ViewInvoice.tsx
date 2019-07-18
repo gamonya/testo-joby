@@ -21,7 +21,7 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchInvoiceItems: () => dispatch(Actions.fetchInvoiceItems())
+  fetchInvoiceItems: (id: string) => dispatch(Actions.fetchInvoiceItems(id))
 });
 
 type Props =
@@ -33,7 +33,10 @@ type Props =
 class ViewPage extends PureComponent<Props, {}> {
 
   public componentDidMount(): void {
-    this.props.fetchInvoiceItems()
+    if (this.props.invoice) {
+      this.props.fetchInvoiceItems(this.props.invoice.id);
+    }
+
   }
 
   public prodItems = () => {

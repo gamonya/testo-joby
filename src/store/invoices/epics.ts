@@ -37,9 +37,8 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
 export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.FETCH_INVOICE_ITEMS),
-    tap(() => console.log(state.value.invoices.currentIdInvoice)),
-    switchMap((): any => {
-      return invoicesService.getInvoiceItems(state.value.invoices.currentIdInvoice).pipe(
+    switchMap((action: any): any => {
+      return invoicesService.getInvoiceItems(action.payload).pipe(
         map((res: any) => {
           const item: any = [];
           res.response.map((items: any) => {

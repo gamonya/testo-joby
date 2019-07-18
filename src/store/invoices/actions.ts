@@ -27,7 +27,7 @@ export const Actions = {
   fetchInvoicesSuccess: (payload: Invoices[]) => action(ActionTypes.FETCH_INVOICES_SUCCESS, payload),
   fetchInvoicesError: (payload: string) => action(ActionTypes.FETCH_INVOICES_FAILURE, payload),
 
-  fetchInvoiceItems: () => action(ActionTypes.FETCH_INVOICE_ITEMS),
+  fetchInvoiceItems: (id: string) => action(ActionTypes.FETCH_INVOICE_ITEMS, id),
   addInvoiceItems: (payload: InvoiceItems[]) => action(ActionTypes.ADD_INVOICE_ITEMS, payload),
   // CRUD  ACTION
   addInvoice: (payload: Invoices) => action(ActionTypes.ADD_INVOICE, payload),
