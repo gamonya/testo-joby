@@ -26,10 +26,10 @@ export interface InvoiseState {
   isInvoiceSaved: boolean,
   currentTotalCount: number,
   currentEditedItem: {
-    id: string,
-    product: string,
+    item_id: string,
+    product_id: string,
     quantity: number
-  } | {}
+  }
 }
 
 // CRUD INTERFACE

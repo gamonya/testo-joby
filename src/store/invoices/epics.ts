@@ -1,6 +1,6 @@
-import { Epic, ofType, ActionsObservable, StateObservable } from 'redux-observable';
+import { ActionsObservable, Epic, ofType, StateObservable } from 'redux-observable';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { mergeMap, map, catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
 import { of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
@@ -33,7 +33,7 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
 
 export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>) => {
   return action$.pipe(
-    ofType(ActionTypes.FETCH_INVOICE_ITEMS),
+    ofType(ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS, ActionTypes.FETCH_INVOICE_ITEMS),
     switchMap((action: any): any => {
       return invoicesService.getInvoiceItems(action.payload).pipe(
         map((res: any) => {
@@ -101,16 +101,16 @@ export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state
   return action$.pipe(
     ofType(ActionTypes.INSERT_ITEM),
     switchMap((): any => {
-        return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
-          {
-            customer_id: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].customer_id,
-            discount: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].discount,
-            total: state.value.invoices.currentTotalCount
-          }).pipe(
-            map(() => Actions.updateInvoiceSuccess())
-        )
+      return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
+        {
+          customer_id: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].customer_id,
+          discount: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].discount,
+          total: state.value.invoices.currentTotalCount
+        }).pipe(
+        map(() => Actions.updateInvoiceSuccess())
+      );
     })
-  )
+  );
 };
 
 //  INSERT
@@ -147,36 +147,19 @@ export const insertInvoiceItems = (action$: ActionsObservable<ActionTypeUnion>, 
 
 export const updateItems = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
-    ofType(ActionTypes.START_UPDATE_INVOICE),
-    mergeMap((action: any): any => {
-      if (state.value.form.addInvoice.values) {
-
-        const { values } = state.value.form.addInvoice;
-        console.log(state.value)
-        const invoice = state.value.invoices.invoices[state.value.invoices.currentIdInvoice];
-        const editedResults = [];
-        for (let item in values.qtyGroup) {
-          const itemsValuesFromEdit = {
-            id: item,
-            invoice_id: invoice.id,
-            quantity: values.qtyGroup[item],
-            product_id: values.itemsGroup[item]
+    ofType(ActionTypes.START_UPDATE_INVOICE_ITEMS),
+    switchMap((): any => {
+        if (state.value.invoices.currentEditedItem.product_id && state.value.invoices.currentEditedItem.quantity) {
+          const item = {
+            invoice_id: state.value.invoices.currentIdInvoice,
+            product_id: state.value.invoices.currentEditedItem.product_id,
+            quantity: state.value.invoices.currentEditedItem.quantity
           };
-          editedResults.push(itemsValuesFromEdit);
+          return invoicesService.updateInvoiceItem(state.value.invoices.currentIdInvoice, state.value.invoices.currentEditedItem.item_id, item).pipe(
+            map(() => Actions.updateInvoiceItemsSuccess(state.value.invoices.currentIdInvoice))
+          );
         }
-
-        // console.log(editedResults)
-
-        if (state.value.form) {
-          return of(Actions.updateInvoice(invoice.id, {
-            id: invoice.id,
-            customer_id: values.customer,
-            discount: Number(invoice.discount),
-            total: discountCalculator(action.payload, invoice.discount || 0),
-            items: editedResults
-          }));
-        }
-      }
+        return of(Actions.updateInvoiceItemsFailure('NO UPDATE ITEMS'));
     })
   );
 };

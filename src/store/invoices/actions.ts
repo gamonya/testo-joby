@@ -17,10 +17,12 @@ export enum ActionTypes {
   UPDATE_INVOICE = 'UPDATE_INVOICE',
   UPDATE_INVOICE_SUCCESS = 'UPDATE_INVOICE_SUCCESS',
   INSERT_ITEM = 'INSERT_ITEM',
-  INSERT_ITEMS_SUCCESS = 'INSERT_ITEMS_SUCCESS',
 
   START_SAVE_INVOICE = 'START_SAVE_INVOICE',
-  START_UPDATE_INVOICE ='START_UPDATE_INVOICE',
+  START_UPDATE_INVOICE_ITEMS ='START_UPDATE_INVOICE_ITEMS',
+  UPDATE_INVOICE_ITEMS_SUCCESS = 'UPDATE_INVOICE_ITEMS_SUCCESS',
+  UPDATE_INVOICE_ITEMS_FAILURE = 'UPDATE_INVOICE_ITEMS_FAILURE',
+
   START_INSERT_ITEMS = 'START_INSERT_ITEMS',
 
   SET_CURRENT_EDITED_ITEM = 'SET_CURRENT_EDITED_ITEM',
@@ -47,17 +49,18 @@ export const Actions = {
   updateInvoiceSuccess: () => action(ActionTypes.UPDATE_INVOICE_SUCCESS),
   insertItem: (payload: InvoiceItems) => action(ActionTypes.INSERT_ITEM, payload),
 
-  insertItemSuccess: () => action(ActionTypes.INSERT_ITEMS_SUCCESS),
+  updateInvoiceItemsSuccess: (invoice_id: string) => action(ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS, invoice_id),
+  updateInvoiceItemsFailure: (err: string) => action(ActionTypes.UPDATE_INVOICE_ITEMS_FAILURE, err),
 
   invoiceSaved: (payload: boolean) => action(ActionTypes.INVOICE_SAIVED, payload),
   // START EPICS
   startSave: () => action(ActionTypes.START_SAVE_INVOICE),
   startInsertInvoice: () => action(ActionTypes.START_INSERT_ITEMS),
-  startUpdate: (payload: number) => action(ActionTypes.START_UPDATE_INVOICE, payload),
+  startUpdateInvoiceItems: (payload: number) => action(ActionTypes.START_UPDATE_INVOICE_ITEMS, payload),
   startDeleteInvoice: (id: string) => action(ActionTypes.START_DELETE_INVOICE, id),
   //
   setCurrentTotalCount: (payload: number) => action(ActionTypes.SET_CURRENT_TOTAL_COUNT, payload),
-  setCurrentEditedItem: (id: string, product: string, quantity: number) => action(ActionTypes.SET_CURRENT_EDITED_ITEM, {id, product, quantity})
+  setCurrentEditedItem: (item_id: string, product_id: string, quantity: number) => action(ActionTypes.SET_CURRENT_EDITED_ITEM, {item_id, product_id, quantity})
 
 };
 

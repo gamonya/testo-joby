@@ -43,7 +43,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   updateInvoice: (id: string, payload: Invoices) => dispatch(Actions.updateInvoice(id, payload)),
   invoiceSaved: (payload: boolean) => dispatch(Actions.invoiceSaved(payload)),
   startSave: () => dispatch(Actions.startSave()),
-  startUpdate: (payload: number) => dispatch(Actions.startUpdate(payload)),
+  startUpdateInvoiceItems: (payload: number) => dispatch(Actions.startUpdateInvoiceItems(payload)),
   startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice()),
   setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity))
 });
@@ -60,7 +60,6 @@ type Props =
 function CreateForm(props: Props) {
 
   const refPrice = useRef(null);
-  const [currentEditedProduct, setCurrentEditedProduct] = useState('');
   const [currentEditedID, setCurrentEditedID] = useState('');
 
   const { formValue } = props;
@@ -113,7 +112,7 @@ function CreateForm(props: Props) {
   };
 
   const editInvoice = () => {
-    props.startUpdate(props.total);
+    props.startUpdateInvoiceItems(props.total);
   };
 
   const insertInvoiceItem = () => {
@@ -143,7 +142,7 @@ function CreateForm(props: Props) {
       validator();
 
       if(formValue.addInvoice && formValue.addInvoice.values) {
-        props.setCurrentEditedItem(currentEditedID, currentEditedProduct, Number(formValue.addInvoice.values.qtyGroup[currentEditedID]))
+        props.setCurrentEditedItem(currentEditedID, formValue.addInvoice.values.itemsGroup[currentEditedID], Number(formValue.addInvoice.values.qtyGroup[currentEditedID]))
       }
 
       // auto update
@@ -157,11 +156,10 @@ function CreateForm(props: Props) {
     },
     [props.formValue.addInvoice]
   );
-
+   // Set Edited Items to State
    const handleChangeProduct = (e: any) => {
-     const itemID = e.target.name.slice(11);
+     const itemID = e.target.name.split('.')[1];
      setCurrentEditedID(itemID);
-     setCurrentEditedProduct(e.target.value);
    };
 
   return (
@@ -198,13 +196,13 @@ function CreateForm(props: Props) {
 
                 {props.invoice && props.endsUrl && props.items && props.items.map((item: any) => {
                   return (
-                    <tr key={item.id}>
+                    <tr key={item.id} onClick={handleChangeProduct}>
                       <td>
                         <FormSection name='itemsGroup'>
                           <Field
                             className='name-select'
                             name={`${item.id}`}
-                            onChange={handleChangeProduct}
+
                             component="select"
                           >
                             {props.products.map((items: Products) => {

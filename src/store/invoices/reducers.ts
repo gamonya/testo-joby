@@ -11,7 +11,11 @@ const initialState: InvoiseState = {
   invoices: {},
   items: [],
   isInvoiceSaved: false,
-  currentEditedItem: {},
+  currentEditedItem: {
+    item_id: '',
+    product_id: '',
+    quantity: 0
+  },
   currentTotalCount: 0
 };
 
