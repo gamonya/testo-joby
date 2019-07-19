@@ -5,7 +5,7 @@ import { InvoiseState } from './types';
 
 export const getInvoiceState = (state: AppState) => state.invoices;
 
-export const getInvoiceError = (state: AppState) => state.invoices.error
+export const getInvoiceError = (state: AppState) => state.invoices.error;
 
 
 export const getInvoices = createSelector(
@@ -16,7 +16,7 @@ export const getInvoices = createSelector(
 export  const getInvoiceItems = createSelector(
   [getInvoiceState],
   (state: InvoiseState) => state.items
-)
+);
 
 
 export const getActiveInvoicesCount = createSelector(

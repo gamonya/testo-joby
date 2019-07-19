@@ -97,9 +97,25 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
   );
 };
 
+
+export const deleteInvoice = (action$: ActionsObservable<ActionTypeUnion>) => {
+  return action$.pipe(
+    ofType(ActionTypes.START_DELETE_INVOICE),
+    mergeMap((action: any): any => {
+      return invoicesService.deleteInvoice(action.payload).pipe(
+        map((res) => {
+          return Actions.removeInvoice(res.response._id);
+        }),
+        catchError(() => of(Actions.fetchInvoicesError(`invoices delete error`)))
+      );
+    })
+  );
+};
+
+
 export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
-    ofType(ActionTypes.INSERT_ITEM),
+    ofType(ActionTypes.INSERT_ITEM, ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS),
     switchMap((): any => {
       return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
         {
@@ -164,16 +180,3 @@ export const updateItems = (action$: ActionsObservable<ActionTypeUnion>, state: 
   );
 };
 
-export const deleteInvoice = (action$: ActionsObservable<ActionTypeUnion>) => {
-  return action$.pipe(
-    ofType(ActionTypes.START_DELETE_INVOICE),
-    mergeMap((action: any): any => {
-      return invoicesService.deleteInvoice(action.payload).pipe(
-        map((res) => {
-          return Actions.removeInvoice(res.response._id);
-        }),
-        catchError(() => of(Actions.fetchInvoicesError(`invoices delete error`)))
-      );
-    })
-  );
-};
