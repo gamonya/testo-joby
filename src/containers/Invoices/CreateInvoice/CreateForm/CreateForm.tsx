@@ -9,7 +9,13 @@ import { Customers } from '../../../../store/customers/types';
 import { Dispatch } from 'redux';
 import { Invoices } from '../../../../store/invoices/types';
 import { Actions } from '../../../../store/invoices/actions';
-import { getEditedQtyState, getEditedProductsState, getEditedCustomerState, getInvoiceState, getInvoiceItems } from '../../../../store/invoices/selectors';
+import {
+  getEditedQtyState,
+  getEditedProductsState,
+  getEditedCustomerState,
+  getInvoiceState,
+  getInvoiceItems
+} from '../../../../store/invoices/selectors';
 import { AppState } from '../../../../store';
 import { getProductState } from '../../../../store/products/selectors';
 import { customSelect, customInputNumber } from './customFields';
@@ -131,7 +137,7 @@ function CreateForm(props: Props) {
   }, [startUpdateInvoiceItems, total]);
 
   const insertInvoiceItem = () => {
-    startInsertInvoiceItems()
+    startInsertInvoiceItems();
   };
 
   const submitForm = (e: React.SyntheticEvent) => {
@@ -142,8 +148,8 @@ function CreateForm(props: Props) {
     if (endsUrl) {
       editInvoice();
     }
-    if(endsUrl && formValue.addInvoice && formValue.addInvoice.values && formValue.addInvoice.values.qty) {
-      insertInvoiceItem()
+    if (endsUrl && formValue.addInvoice && formValue.addInvoice.values && formValue.addInvoice.values.qty) {
+      insertInvoiceItem();
     }
   };
 
@@ -156,8 +162,8 @@ function CreateForm(props: Props) {
       }
       validator();
 
-      if(formValue.addInvoice && formValue.addInvoice.values) {
-        setCurrentEditedItem(currentEditedID, formValue.addInvoice.values.itemsGroup[currentEditedID], Number(formValue.addInvoice.values.qtyGroup[currentEditedID]))
+      if (formValue.addInvoice && formValue.addInvoice.values) {
+        setCurrentEditedItem(currentEditedID, formValue.addInvoice.values.itemsGroup[currentEditedID], Number(formValue.addInvoice.values.qtyGroup[currentEditedID]));
       }
 
       // auto update
@@ -171,16 +177,21 @@ function CreateForm(props: Props) {
     },
     [formValue.addInvoice, productState, endsUrl, invoice, products, customers, items, currentEditedID, editInvoice, setPriseDynamic, validator, setCurrentEditedItem]
   );
-   // Set Edited Items to State
-   const handleChangeProduct = (e: any) => {
-     const itemID = e.target.name.split('.')[1];
-     setCurrentEditedID(itemID);
-   };
+  // Set Edited Items to State
+  const handleChangeProduct = (e: any) => {
+    let itemID = '';
+    if (e.target && e.target.tagName && e.target.tagName.toUpperCase() === 'TD') {
+      itemID = e.target['data-name'];
+    } else {
+      itemID = e.target.name.split('.')[1];
+    }
+    setCurrentEditedID(itemID);
+  };
 
   return (
     <>
       {/*  Redirect when EMPTY invoices */}
-      {invoicesState.ids.length === 0 && <Redirect to="/invoices/" />}
+      {invoicesState.ids.length === 0 && <Redirect to="/invoices/"/>}
       <form
         className='create-form'
         onSubmit={submitForm}
@@ -249,7 +260,7 @@ function CreateForm(props: Props) {
 
                       </td>
                       {/* items price */}
-                      <td className='table-price'>
+                      <td className='table-price' data-name={`${item.id}`}>
                         {formValue
                         && formValue.addInvoice
                         && formValue.addInvoice.values
@@ -316,7 +327,7 @@ function CreateForm(props: Props) {
           </div>
         </div>
         {/* ===========  SUBMIT BUTTON =========   */}
-        { <button
+        {<button
           type="submit"
           disabled={isError}
           className='submit-button'>Save invoice
