@@ -1,6 +1,6 @@
 import { ActionsObservable, Epic, ofType, StateObservable } from 'redux-observable';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, debounceTime, map, mergeMap, switchMap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
 import { of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
@@ -164,6 +164,7 @@ export const insertInvoiceItems = (action$: ActionsObservable<ActionTypeUnion>, 
 export const updateItems = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.START_UPDATE_INVOICE_ITEMS),
+    // debounceTime(500),
     switchMap((): any => {
         if (state.value.invoices.currentEditedItem.product_id && state.value.invoices.currentEditedItem.quantity) {
           const item = {
