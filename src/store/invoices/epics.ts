@@ -152,9 +152,9 @@ export const updateItems = (action$: ActionsObservable<ActionTypeUnion>, state: 
       if (state.value.form.addInvoice.values) {
 
         const { values } = state.value.form.addInvoice;
+        console.log(state.value)
         const invoice = state.value.invoices.invoices[state.value.invoices.currentIdInvoice];
         const editedResults = [];
-       // console.log(values)
         for (let item in values.qtyGroup) {
           const itemsValuesFromEdit = {
             id: item,

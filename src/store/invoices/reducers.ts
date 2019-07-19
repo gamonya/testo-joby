@@ -11,6 +11,7 @@ const initialState: InvoiseState = {
   invoices: {},
   items: [],
   isInvoiceSaved: false,
+  currentEditedItem: {},
   currentTotalCount: 0
 };
 
@@ -69,6 +70,12 @@ export function reducer(
       return {
         ...state,
         currentTotalCount: action.payload
+      }
+    }
+    case ActionTypes.SET_CURRENT_EDITED_ITEM: {
+      return {
+        ...state,
+        currentEditedItem: action.payload
       }
     }
     case ActionTypes.REMOVE_INVOICE: {

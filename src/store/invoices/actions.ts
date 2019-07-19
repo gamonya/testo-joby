@@ -23,7 +23,7 @@ export enum ActionTypes {
   START_UPDATE_INVOICE ='START_UPDATE_INVOICE',
   START_INSERT_ITEMS = 'START_INSERT_ITEMS',
 
-
+  SET_CURRENT_EDITED_ITEM = 'SET_CURRENT_EDITED_ITEM',
   SET_CURRENT_TOTAL_COUNT = 'SET_CURRENT_TOTAL_COUNT',
   INVOICE_SAIVED = 'INVOICE_SAIVED',
   START_DELETE_INVOICE = 'START_DELETE_INVOICE',
@@ -57,6 +57,7 @@ export const Actions = {
   startDeleteInvoice: (id: string) => action(ActionTypes.START_DELETE_INVOICE, id),
   //
   setCurrentTotalCount: (payload: number) => action(ActionTypes.SET_CURRENT_TOTAL_COUNT, payload),
+  setCurrentEditedItem: (id: string, product: string, quantity: number) => action(ActionTypes.SET_CURRENT_EDITED_ITEM, {id, product, quantity})
 
 };
 

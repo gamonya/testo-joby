@@ -44,7 +44,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   invoiceSaved: (payload: boolean) => dispatch(Actions.invoiceSaved(payload)),
   startSave: () => dispatch(Actions.startSave()),
   startUpdate: (payload: number) => dispatch(Actions.startUpdate(payload)),
-  startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice())
+  startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice()),
+  setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity))
 });
 
 
@@ -59,9 +60,8 @@ type Props =
 function CreateForm(props: Props) {
 
   const refPrice = useRef(null);
-  const [currentEditedProduct, setCurrentEditedProduct] = useState('')
-  const [currentEditedQty, setCurrentEditedQty] = useState('')
-  const [currentEditedID, setCurrentEditedID] = useState('')
+  const [currentEditedProduct, setCurrentEditedProduct] = useState('');
+  const [currentEditedID, setCurrentEditedID] = useState('');
 
   const { formValue } = props;
 
@@ -141,7 +141,11 @@ function CreateForm(props: Props) {
         setPriseDynamic();
       }
       validator();
-      console.log(currentEditedProduct, currentEditedQty)
+
+      if(formValue.addInvoice && formValue.addInvoice.values) {
+        props.setCurrentEditedItem(currentEditedID, currentEditedProduct, Number(formValue.addInvoice.values.qtyGroup[currentEditedID]))
+      }
+
       // auto update
       if (
         props.endsUrl
@@ -149,8 +153,6 @@ function CreateForm(props: Props) {
         && formValue.addInvoice
         && formValue.addInvoice.values) {
         editInvoice();
-
-
       }
     },
     [props.formValue.addInvoice]
@@ -160,10 +162,6 @@ function CreateForm(props: Props) {
      const itemID = e.target.name.slice(11);
      setCurrentEditedID(itemID);
      setCurrentEditedProduct(e.target.value);
-   };
-
-   const handleChangeQty = (e: any) => {
-     setCurrentEditedQty(e.target.value)
    };
 
   return (
@@ -229,7 +227,6 @@ function CreateForm(props: Props) {
                           <Field
                             component="input"
                             type='number'
-                            onChange={handleChangeQty}
                             name={`${item.id}`}
                             min='1'
                             className="select-editable"
