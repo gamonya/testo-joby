@@ -24,6 +24,17 @@ export default class InvoicesService {
     })
   }
 
+  static updateInvoice (id: string, payload: NewInvoice) {
+    return ajax({
+      url: `https://api.invoice-app.2muchcoffee.com/api/invoices/${id}`,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: payload
+    })
+  }
+
   static addInvoiceItem (id: string, payload: NewInvoiceItems) {
     return ajax({
       url: `https://api.invoice-app.2muchcoffee.com/api/invoices/${id}/items`,
@@ -34,16 +45,7 @@ export default class InvoicesService {
       body: payload
     })
   }
-  // static insertInvoiceItem (id: string, payload: NewInvoiceItems) {
-  //   return ajax({
-  //     url: `https://api.invoice-app.2muchcoffee.com/api/invoices/${id}/items`,
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: payload
-  //   })
-  // }
+
   static getInvoiceItems (id: string) {
     return ajax(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id}/items`)
   }

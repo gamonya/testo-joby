@@ -23,7 +23,7 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
               customer_id: items.customer_id,
               discount: items.discount,
               total: items.total
-            })
+            });
           });
           return Actions.fetchInvoicesSuccess(invoices);
         }),
@@ -49,10 +49,10 @@ export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>) 
               invoice_id: items.invoice_id,
               product_id: items.product_id,
               quantity: items.quantity
-            })
+            });
           });
-          return Actions.addInvoiceItems(item)
-        }),
+          return Actions.addInvoiceItems(item);
+        })
       );
     })
   );
@@ -61,7 +61,7 @@ export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>) 
 
 export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
-    ofType(ActionTypes.START_SAVE),
+    ofType(ActionTypes.START_SAVE_INVOICE),
     mergeMap((): any => {
       if (state.value.form.addInvoice.values) {
         if (state.value.form.addInvoice.values.product) {
@@ -102,24 +102,39 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
   );
 };
 
+export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
+  return action$.pipe(
+    ofType(ActionTypes.INSERT_ITEM),
+    switchMap((): any => {
+        return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
+          {
+            customer_id: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].customer_id,
+            discount: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].discount,
+            total: state.value.invoices.currentTotalCount
+          }).pipe(
+            map(() => Actions.updateInvoiceSuccess())
+        )
+    })
+  )
+};
+
 //  INSERT
 export const insertInvoiceItems = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.START_INSERT_ITEMS),
-    switchMap((): any => {
+    mergeMap((): any => {
       if (state.value.form.addInvoice.values) {
         const { values } = state.value.form.addInvoice;
 
         if (values.product && values.qty) {
-          // console.log(values);
-          const item ={
+          const item = {
             invoice_id: state.value.invoices.currentIdInvoice,
             quantity: Number(values.qty),
             product_id: values.product
           };
           return invoicesService.addInvoiceItem(state.value.invoices.currentIdInvoice, item).pipe(
             map((data) => {
-              const response = data.response[0]
+              const response = data.response[0];
               delete response['updatedAt'];
               delete response['createdAt'];
               const item = {
@@ -127,22 +142,19 @@ export const insertInvoiceItems = (action$: ActionsObservable<ActionTypeUnion>, 
                 invoice_id: response.invoice_id,
                 product_id: response.product_id,
                 quantity: response.quantity
-              }
-              return Actions.insertItem(item)
-              console.log(item)
+              };
+              return Actions.insertItem(item);
             })
-          )
+          );
         }
-
-        return of(Actions.invoiceSaved(false))
       }
     })
-  )
+  );
 };
 
 export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
-    ofType(ActionTypes.START_UPDATE),
+    ofType(ActionTypes.START_UPDATE_INVOICE),
     mergeMap((action: any): any => {
       if (state.value.form.addInvoice.values) {
 
@@ -160,15 +172,6 @@ export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: 
           editedResults.push(itemsValuesFromEdit);
         }
 
-        // if (values.product && values.qty) {
-        //   editedResults.push({
-        //     id: 'sdf',
-        //     invoice_id: invoice.id.toString(),
-        //     quantity: values.qty,
-        //     product_id: values.product
-        //   });
-        // }
-        // console.log(editedResults)
         if (state.value.form) {
           return of(Actions.updateInvoice(invoice.id, {
             id: invoice.id,

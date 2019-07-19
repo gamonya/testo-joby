@@ -54,7 +54,7 @@ type Props =
   ;
 
 class CreacteInvoice extends PureComponent<Props, State> {
-
+  private refTotalCount: React.RefObject<HTMLInputElement> = React.createRef();
   public state = {
     price: 0,
     discount: 0,
@@ -70,10 +70,12 @@ class CreacteInvoice extends PureComponent<Props, State> {
     if(this.props.getInvoiceById) {
       this.props.fetchInvoiceItems(this.props.getInvoiceById.id);
     }
-
-    this.setState({
-      totalPrice: sum(this.setTotalPrice())
-    });
+    if(this.refTotalCount.current) {
+      this.props.setCurrentTotal(Number(this.refTotalCount.current.textContent));
+    }
+    // this.setState({
+    //   totalPrice: sum(this.setTotalPrice())
+    // });
   }
 
   // Return array of price number
@@ -98,13 +100,15 @@ class CreacteInvoice extends PureComponent<Props, State> {
         url: this.props.match.url
       });
     }
-
+    // UPDATE TOTAL PRICE
+    if(this.refTotalCount.current) {
+      this.props.setCurrentTotal(Number(this.refTotalCount.current.textContent));
+    }
+    //
     if (prevProps.formValue.addInvoice !== this.props.formValue.addInvoice) {
       this.setState({
         totalPrice: sum(this.setTotalPrice())
       });
-      // UPDATE TOTAL PRICE
-      this.props.setCurrentTotal(this.setTotalPrice());
 
       if (values !== undefined && this.props.products !== undefined && values.product !== undefined && values.qty !== undefined) {
 
@@ -146,7 +150,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
             }
           </div>}
           {/*  EDIT PAGE */}
-          {endsUrl && <div className='total-count'>
+          {endsUrl && <div className='total-count' ref={this.refTotalCount}>
             {this.props.getInvoiceById && this.props.getInvoiceById.discount &&
             discountCalculator(this.state.totalPrice, this.props.getInvoiceById.discount) || 0
             }
