@@ -1,6 +1,6 @@
 import { Epic, ofType, ActionsObservable, StateObservable } from 'redux-observable';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap, tap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
 import { of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
@@ -76,11 +76,11 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
           // SAVE INVOICE
           return invoicesService.addInvoice(invoice).pipe(
             switchMap(((res: any): any => {
-              const items = [{
+              const items = {
                 invoice_id: res.response._id,
                 product_id: value.form.addInvoice.values!.product,
                 quantity: Number(value.form.addInvoice.values!.qty)
-              }];
+              };
               // SAVE INVOICE ITEMS
               return invoicesService.addInvoiceItem(res.response._id, items).pipe(
                 map((value) => {
@@ -102,6 +102,43 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
   );
 };
 
+//  INSERT
+export const insertInvoiceItems = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
+  return action$.pipe(
+    ofType(ActionTypes.START_INSERT_ITEMS),
+    switchMap((): any => {
+      if (state.value.form.addInvoice.values) {
+        const { values } = state.value.form.addInvoice;
+
+        if (values.product && values.qty) {
+          // console.log(values);
+          const item ={
+            invoice_id: state.value.invoices.currentIdInvoice,
+            quantity: Number(values.qty),
+            product_id: values.product
+          };
+          return invoicesService.addInvoiceItem(state.value.invoices.currentIdInvoice, item).pipe(
+            map((data) => {
+              const response = data.response[0]
+              delete response['updatedAt'];
+              delete response['createdAt'];
+              const item = {
+                id: response._id,
+                invoice_id: response.invoice_id,
+                product_id: response.product_id,
+                quantity: response.quantity
+              }
+              return Actions.insertItem(item)
+              console.log(item)
+            })
+          )
+        }
+
+        return of(Actions.invoiceSaved(false))
+      }
+    })
+  )
+};
 
 export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
@@ -123,16 +160,15 @@ export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: 
           editedResults.push(itemsValuesFromEdit);
         }
 
-        if (values.product && values.qty) {
-          editedResults.push({
-            id: 'sdf',
-            invoice_id: invoice.id.toString(),
-            quantity: values.qty,
-            product_id: values.product
-          });
-        }
-        console.log(editedResults)
-
+        // if (values.product && values.qty) {
+        //   editedResults.push({
+        //     id: 'sdf',
+        //     invoice_id: invoice.id.toString(),
+        //     quantity: values.qty,
+        //     product_id: values.product
+        //   });
+        // }
+        // console.log(editedResults)
         if (state.value.form) {
           return of(Actions.updateInvoice(invoice.id, {
             id: invoice.id,

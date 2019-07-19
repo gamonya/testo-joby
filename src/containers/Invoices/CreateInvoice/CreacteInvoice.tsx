@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { sum } from 'lodash'
 
 import { getCustomers } from '../../../store/customers/selectors';
 import { getProducts, getProductState } from '../../../store/products/selectors';
@@ -70,14 +71,12 @@ class CreacteInvoice extends PureComponent<Props, State> {
       this.props.fetchInvoiceItems(this.props.getInvoiceById.id);
     }
 
-
-
     this.setState({
-      totalPrice: this.setTotalPrice()
+      totalPrice: sum(this.setTotalPrice())
     });
   }
 
-  // d
+  // Return array of price number
   public setTotalPrice = () => {
     if (this.props.formValue && this.props.formValue.addInvoice && this.props.formValue.addInvoice.values) {
       const values = this.props.formValue.addInvoice.values;
@@ -87,14 +86,12 @@ class CreacteInvoice extends PureComponent<Props, State> {
         keys.map((item): void => {
           res.push(this.props.productsState.products[values.itemsGroup[item]].price * values.qtyGroup[item]);
         });
-        const total = res.reduce((a: number, b: number) => a + b,[]);
-        return total;
+        return res;
       }
     }
   };
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState:  Readonly<State>) {
-    //
     const { values } = this.props.formValue.addInvoice;
     if (prevState.url !== this.props.match.url) {
       this.setState({
@@ -104,7 +101,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
 
     if (prevProps.formValue.addInvoice !== this.props.formValue.addInvoice) {
       this.setState({
-        totalPrice: this.setTotalPrice()
+        totalPrice: sum(this.setTotalPrice())
       });
       // UPDATE TOTAL PRICE
       this.props.setCurrentTotal(this.setTotalPrice());

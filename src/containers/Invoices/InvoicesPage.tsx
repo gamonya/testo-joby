@@ -85,7 +85,7 @@ class InvoicesPage extends PureComponent<Props, {}> {
                 <td>{item.id}</td>
                 <td>{customer.customers[item.customer_id].name}</td>
                 <td>{item.discount}</td>
-                <td>{item.total}</td>
+                <td>{item.total.toString()}</td>
                 <td>
                   <button className='invoices-btn invoices-btn--view' onClick={() => this.toView(item.id)}>View</button>
                   <button className='invoices-btn invoices-btn--edit' onClick={() => this.toEdit(item.id)}>Edit</button>

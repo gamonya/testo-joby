@@ -86,6 +86,15 @@ export function reducer(
         isInvoiceSaved: action.payload
       }
     }
+    case ActionTypes.INSERT_ITEM: {
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          action.payload
+        ]
+      }
+    }
     case ActionTypes.SET_CURRENT_ID_INVOICE: {
       return {
         ...state,

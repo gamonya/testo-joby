@@ -24,7 +24,7 @@ export default class InvoicesService {
     })
   }
 
-  static addInvoiceItem (id: string, payload: NewInvoiceItems[]) {
+  static addInvoiceItem (id: string, payload: NewInvoiceItems) {
     return ajax({
       url: `https://api.invoice-app.2muchcoffee.com/api/invoices/${id}/items`,
       method: 'POST',
@@ -34,7 +34,16 @@ export default class InvoicesService {
       body: payload
     })
   }
-
+  // static insertInvoiceItem (id: string, payload: NewInvoiceItems) {
+  //   return ajax({
+  //     url: `https://api.invoice-app.2muchcoffee.com/api/invoices/${id}/items`,
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: payload
+  //   })
+  // }
   static getInvoiceItems (id: string) {
     return ajax(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id}/items`)
   }

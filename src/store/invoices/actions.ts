@@ -14,8 +14,12 @@ export enum ActionTypes {
   ADD_INVOICE = 'ADD_INVOICE',
   REMOVE_INVOICE = 'REMOVE_INVOICE',
   UPDATE_INVOICE = 'UPDATE_INVOICE',
+  INSERT_ITEM = 'INSERT_ITEM',
+
   START_SAVE = 'START_SAVE',
   START_UPDATE ='START_UPDATE',
+  START_INSERT_ITEMS = 'START_INSERT_ITEMS',
+
   SET_CURRENT_TOTAL_COUNT = 'SET_CURRENT_TOTAL_COUNT',
   INVOICE_SAIVED = 'INVOICE_SAIVED',
   START_DELETE_INVOICE = 'START_DELETE_INVOICE',
@@ -23,20 +27,25 @@ export enum ActionTypes {
 
 export const Actions = {
   setCurrentIdInvoice: (id: string) => action(ActionTypes.SET_CURRENT_ID_INVOICE, id),
+
   fetchInvoicesStart: () => action(ActionTypes.FETCH_INVOICES_START),
   fetchInvoicesSuccess: (payload: Invoices[]) => action(ActionTypes.FETCH_INVOICES_SUCCESS, payload),
   fetchInvoicesError: (payload: string) => action(ActionTypes.FETCH_INVOICES_FAILURE, payload),
 
   fetchInvoiceItems: (id: string) => action(ActionTypes.FETCH_INVOICE_ITEMS, id),
+
   addInvoiceItems: (payload: InvoiceItems[]) => action(ActionTypes.ADD_INVOICE_ITEMS, payload),
   // CRUD  ACTION
   addInvoice: (payload: Invoices) => action(ActionTypes.ADD_INVOICE, payload),
   removeInvoice: (id: string) => action(ActionTypes.REMOVE_INVOICE, id),
   updateInvoice: (id: string, invoices: Invoices) => action(ActionTypes.UPDATE_INVOICE, {id, invoices}),
+  insertItem: (payload: InvoiceItems) => action(ActionTypes.INSERT_ITEM, payload),
+
 
   invoiceSaved: (payload: boolean) => action(ActionTypes.INVOICE_SAIVED, payload),
   // START EPICS
   startSave: () => action(ActionTypes.START_SAVE),
+  startInsertInvoice: () => action(ActionTypes.START_INSERT_ITEMS),
   startUpdate: (payload: number) => action(ActionTypes.START_UPDATE, payload),
   startDeleteInvoice: (id: string) => action(ActionTypes.START_DELETE_INVOICE, id),
   //

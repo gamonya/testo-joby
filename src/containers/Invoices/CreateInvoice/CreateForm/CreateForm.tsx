@@ -43,7 +43,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   updateInvoice: (id: string, payload: Invoices) => dispatch(Actions.updateInvoice(id, payload)),
   invoiceSaved: (payload: boolean) => dispatch(Actions.invoiceSaved(payload)),
   startSave: () => dispatch(Actions.startSave()),
-  startUpdate: (payload: number) => dispatch(Actions.startUpdate(payload))
+  startUpdate: (payload: number) => dispatch(Actions.startUpdate(payload)),
+  startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice())
 });
 
 
@@ -112,6 +113,10 @@ function CreateForm(props: Props) {
     props.startUpdate(props.total);
   };
 
+  const insertInvoiceItem = () => {
+    props.startInsertInvoiceItems()
+  };
+
   const submitForm = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!props.endsUrl) {
@@ -119,6 +124,9 @@ function CreateForm(props: Props) {
     }
     if (props.endsUrl) {
       editInvoice();
+    }
+    if(props.endsUrl && formValue.addInvoice && formValue.addInvoice.values && formValue.addInvoice.values.qty) {
+      insertInvoiceItem()
     }
   };
 
@@ -130,6 +138,7 @@ function CreateForm(props: Props) {
         setPriseDynamic();
       }
       validator();
+
       // auto update
       if (
         props.endsUrl
@@ -137,6 +146,8 @@ function CreateForm(props: Props) {
         && formValue.addInvoice
         && formValue.addInvoice.values) {
         editInvoice();
+
+
       }
     },
     [props.formValue.addInvoice]
@@ -280,7 +291,7 @@ function CreateForm(props: Props) {
           </div>
         </div>
         {/* ===========  SUBMIT BUTTON =========   */}
-        {!props.endsUrl && <button
+        { <button
           type="submit"
           disabled={isError}
           className='submit-button'>Save invoice
