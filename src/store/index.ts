@@ -15,7 +15,7 @@ import { fetchProductsEpic } from './products/epics';
 import {
   fetchInvoicesEpic,
   saveInvoice,
-  startUpdate,
+  updateItems,
   deleteInvoice,
   fetchInvoicesItems,
   insertInvoiceItems,
@@ -27,7 +27,7 @@ const rootEpic = combineEpics(
   fetchProductsEpic,
   fetchInvoicesEpic,
   saveInvoice,
-  startUpdate,
+  updateItems,
   deleteInvoice,
   fetchInvoicesItems,
   insertInvoiceItems,

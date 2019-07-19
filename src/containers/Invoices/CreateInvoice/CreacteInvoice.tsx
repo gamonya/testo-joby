@@ -73,9 +73,6 @@ class CreacteInvoice extends PureComponent<Props, State> {
     if(this.refTotalCount.current) {
       this.props.setCurrentTotal(Number(this.refTotalCount.current.textContent));
     }
-    // this.setState({
-    //   totalPrice: sum(this.setTotalPrice())
-    // });
   }
 
   // Return array of price number

@@ -13,11 +13,8 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
     switchMap(() => {
       return invoicesService.fetchInvoices().pipe(
         map((res: any) => {
-
           const invoices: any = [];
           res.map((items: any) => {
-            delete items['updatedAt'];
-            delete items['createdAt'];
             invoices.push({
               id: items._id,
               customer_id: items.customer_id,
@@ -42,8 +39,6 @@ export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>) 
         map((res: any) => {
           const item: any = [];
           res.response.map((items: any) => {
-            delete items['updatedAt'];
-            delete items['createdAt'];
             item.push({
               id: items._id,
               invoice_id: items.invoice_id,
@@ -135,8 +130,6 @@ export const insertInvoiceItems = (action$: ActionsObservable<ActionTypeUnion>, 
           return invoicesService.addInvoiceItem(state.value.invoices.currentIdInvoice, item).pipe(
             map((data) => {
               const response = data.response[0];
-              delete response['updatedAt'];
-              delete response['createdAt'];
               const item = {
                 id: response._id,
                 invoice_id: response.invoice_id,
@@ -152,7 +145,7 @@ export const insertInvoiceItems = (action$: ActionsObservable<ActionTypeUnion>, 
   );
 };
 
-export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
+export const updateItems = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.START_UPDATE_INVOICE),
     mergeMap((action: any): any => {
@@ -161,7 +154,7 @@ export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: 
         const { values } = state.value.form.addInvoice;
         const invoice = state.value.invoices.invoices[state.value.invoices.currentIdInvoice];
         const editedResults = [];
-
+       // console.log(values)
         for (let item in values.qtyGroup) {
           const itemsValuesFromEdit = {
             id: item,
@@ -171,6 +164,8 @@ export const startUpdate = (action$: ActionsObservable<ActionTypeUnion>, state: 
           };
           editedResults.push(itemsValuesFromEdit);
         }
+
+        // console.log(editedResults)
 
         if (state.value.form) {
           return of(Actions.updateInvoice(invoice.id, {

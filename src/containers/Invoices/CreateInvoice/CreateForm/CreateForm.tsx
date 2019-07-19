@@ -59,6 +59,9 @@ type Props =
 function CreateForm(props: Props) {
 
   const refPrice = useRef(null);
+  const [currentEditedProduct, setCurrentEditedProduct] = useState('')
+  const [currentEditedQty, setCurrentEditedQty] = useState('')
+  const [currentEditedID, setCurrentEditedID] = useState('')
 
   const { formValue } = props;
 
@@ -138,7 +141,7 @@ function CreateForm(props: Props) {
         setPriseDynamic();
       }
       validator();
-
+      console.log(currentEditedProduct, currentEditedQty)
       // auto update
       if (
         props.endsUrl
@@ -152,6 +155,16 @@ function CreateForm(props: Props) {
     },
     [props.formValue.addInvoice]
   );
+
+   const handleChangeProduct = (e: any) => {
+     const itemID = e.target.name.slice(11);
+     setCurrentEditedID(itemID);
+     setCurrentEditedProduct(e.target.value);
+   };
+
+   const handleChangeQty = (e: any) => {
+     setCurrentEditedQty(e.target.value)
+   };
 
   return (
     <>
@@ -193,12 +206,13 @@ function CreateForm(props: Props) {
                           <Field
                             className='name-select'
                             name={`${item.id}`}
-
+                            onChange={handleChangeProduct}
                             component="select"
                           >
                             {props.products.map((items: Products) => {
                                 return (
                                   <option
+
                                     key={items.id}
                                     value={items.id}>{items.name}</option>
                                 );
@@ -215,6 +229,7 @@ function CreateForm(props: Props) {
                           <Field
                             component="input"
                             type='number'
+                            onChange={handleChangeQty}
                             name={`${item.id}`}
                             min='1'
                             className="select-editable"
