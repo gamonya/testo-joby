@@ -51,7 +51,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   startSave: () => dispatch(Actions.startSave()),
   startUpdateInvoiceItems: (payload: number) => dispatch(Actions.startUpdateInvoiceItems(payload)),
   startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice()),
-  setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity))
+  setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity)),
+  startUpdateInvoiceCustomer: () => dispatch(Actions.startUpdateInvoiceCustomer())
 });
 
 
@@ -82,8 +83,14 @@ function CreateForm(props: Props) {
     startUpdateInvoiceItems,
     startInsertInvoiceItems,
     setCurrentEditedItem,
-    total
+    total,
+    startUpdateInvoiceCustomer
   } = props;
+
+  let customer: string = '';
+   if(formValue.addInvoice && formValue.addInvoice.values) {
+     customer = formValue.addInvoice.values.customer;
+   }
 
   const [price, setPrice] = useState(1);
   // ERRORS
@@ -177,7 +184,16 @@ function CreateForm(props: Props) {
     },
     [formValue.addInvoice, productState, endsUrl, invoice, products, customers, items, currentEditedID, editInvoice, setPriseDynamic, validator, setCurrentEditedItem]
   );
-  // Set Edited Items to State
+
+  // Update invoice customer
+  useEffect(() => {
+    if(formValue.addInvoice && formValue.addInvoice.values) {
+      startUpdateInvoiceCustomer();
+    }
+
+  }, [customer]);
+
+  // Set Edited Items to STORE
   const handleChangeProduct = (e: any) => {
     let itemID = '';
     if (e.target && e.target.tagName && e.target.tagName.toUpperCase() === 'TD') {

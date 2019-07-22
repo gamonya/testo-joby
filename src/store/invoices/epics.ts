@@ -1,6 +1,6 @@
 import { ActionsObservable, Epic, ofType, StateObservable } from 'redux-observable';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { catchError, debounceTime, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
 import { of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
@@ -115,16 +115,21 @@ export const deleteInvoice = (action$: ActionsObservable<ActionTypeUnion>) => {
 
 export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
-    ofType(ActionTypes.INSERT_ITEM, ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS),
+    ofType(ActionTypes.INSERT_ITEM, ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS, ActionTypes.START_UPDATE_INVOICE_CUSTOMER),
     switchMap((): any => {
-      return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
-        {
-          customer_id: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].customer_id,
+      let item: any = {};
+      if (state.value.form.addInvoice && state.value.form.addInvoice.values) {
+        item = {
+          customer_id: state.value.form.addInvoice.values.customer || state.value.invoices.invoices[state.value.invoices.currentIdInvoice].customer_id,
           discount: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].discount,
           total: state.value.invoices.currentTotalCount
-        }).pipe(
+        };
+      }
+      return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
+        item).pipe(
         map(() => Actions.updateInvoiceSuccess())
       );
+
     })
   );
 };
@@ -166,17 +171,17 @@ export const updateItems = (action$: ActionsObservable<ActionTypeUnion>, state: 
     ofType(ActionTypes.START_UPDATE_INVOICE_ITEMS),
     // debounceTime(500),
     switchMap((): any => {
-        if (state.value.invoices.currentEditedItem.product_id && state.value.invoices.currentEditedItem.quantity) {
-          const item = {
-            invoice_id: state.value.invoices.currentIdInvoice,
-            product_id: state.value.invoices.currentEditedItem.product_id,
-            quantity: state.value.invoices.currentEditedItem.quantity
-          };
-          return invoicesService.updateInvoiceItem(state.value.invoices.currentIdInvoice, state.value.invoices.currentEditedItem.item_id, item).pipe(
-            map(() => Actions.updateInvoiceItemsSuccess(state.value.invoices.currentIdInvoice))
-          );
-        }
-        return of(Actions.updateInvoiceItemsFailure('NO UPDATE ITEMS'));
+      if (state.value.invoices.currentEditedItem.product_id && state.value.invoices.currentEditedItem.quantity) {
+        const item = {
+          invoice_id: state.value.invoices.currentIdInvoice,
+          product_id: state.value.invoices.currentEditedItem.product_id,
+          quantity: state.value.invoices.currentEditedItem.quantity
+        };
+        return invoicesService.updateInvoiceItem(state.value.invoices.currentIdInvoice, state.value.invoices.currentEditedItem.item_id, item).pipe(
+          map(() => Actions.updateInvoiceItemsSuccess(state.value.invoices.currentIdInvoice))
+        );
+      }
+      return of(Actions.updateInvoiceItemsFailure('NO UPDATE ITEMS'));
     })
   );
 };

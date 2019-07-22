@@ -18,6 +18,9 @@ export enum ActionTypes {
   UPDATE_INVOICE_SUCCESS = 'UPDATE_INVOICE_SUCCESS',
   INSERT_ITEM = 'INSERT_ITEM',
 
+  START_UPDATE_INVOICE_CUSTOMER = 'START_UPDATE_INVOICE_CUSTOMER',
+  UPDATE_INVOICE_CUSTOMER_SUCCESS = 'UPDATE_INVOICE_CUSTOMER_SUCCESS',
+
   START_SAVE_INVOICE = 'START_SAVE_INVOICE',
   START_UPDATE_INVOICE_ITEMS ='START_UPDATE_INVOICE_ITEMS',
   UPDATE_INVOICE_ITEMS_SUCCESS = 'UPDATE_INVOICE_ITEMS_SUCCESS',
@@ -58,6 +61,8 @@ export const Actions = {
   startInsertInvoice: () => action(ActionTypes.START_INSERT_ITEMS),
   startUpdateInvoiceItems: (payload: number) => action(ActionTypes.START_UPDATE_INVOICE_ITEMS, payload),
   startDeleteInvoice: (id: string) => action(ActionTypes.START_DELETE_INVOICE, id),
+
+  startUpdateInvoiceCustomer: () => action(ActionTypes.START_UPDATE_INVOICE_CUSTOMER),
   //
   setCurrentTotalCount: (payload: number) => action(ActionTypes.SET_CURRENT_TOTAL_COUNT, payload),
   setCurrentEditedItem: (item_id: string, product_id: string, quantity: number) => action(ActionTypes.SET_CURRENT_EDITED_ITEM, {item_id, product_id, quantity})
