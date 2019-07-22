@@ -57,7 +57,7 @@ export const fetchInvoicesItems = (action$: ActionsObservable<ActionTypeUnion>) 
 export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.START_SAVE_INVOICE),
-    mergeMap((): any => {
+    switchMap((): any => {
       if (state.value.form.addInvoice.values) {
         if (state.value.form.addInvoice.values.product) {
           const { value } = state;
@@ -93,6 +93,8 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
           );
         }
       }
+
+      return of(Actions.updateInvoiceFailure());
     })
   );
 };
@@ -118,17 +120,18 @@ export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state
     ofType(ActionTypes.INSERT_ITEM, ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS, ActionTypes.START_UPDATE_INVOICE_CUSTOMER),
     switchMap((): any => {
       let item: any = {};
-      if (state.value.form.addInvoice && state.value.form.addInvoice.values) {
+      if (state.value.form.addInvoice && state.value.form.addInvoice.values && state.value.invoices.currentIdInvoice) {
         item = {
           customer_id: state.value.form.addInvoice.values.customer || state.value.invoices.invoices[state.value.invoices.currentIdInvoice].customer_id,
           discount: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].discount,
           total: state.value.invoices.currentTotalCount
         };
+        return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
+          item).pipe(
+          map(() => Actions.updateInvoiceSuccess())
+        );
       }
-      return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
-        item).pipe(
-        map(() => Actions.updateInvoiceSuccess())
-      );
+     return of(Actions.updateInvoiceFailure());
 
     })
   );

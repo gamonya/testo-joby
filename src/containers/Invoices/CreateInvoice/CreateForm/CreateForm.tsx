@@ -108,7 +108,7 @@ function CreateForm(props: Props) {
 
   }, [formValue.addInvoice, productState.products, products]);
 
-  const validator = useCallback(() => {
+  const validator = () => {
     if (formValue.addInvoice && 'syncErrors' in formValue.addInvoice) {
       if (formValue.anyTouched) {
         setIsError(true);
@@ -117,7 +117,7 @@ function CreateForm(props: Props) {
       setErrors('');
       setIsError(false);
     }
-  }, [formValue.anyTouched, formValue.addInvoice]);
+  };
 
   const createInvoice = () => {
     if (formValue.addInvoice.values) {
@@ -168,7 +168,6 @@ function CreateForm(props: Props) {
         setPriseDynamic();
       }
       validator();
-
       if (formValue.addInvoice && formValue.addInvoice.values) {
         setCurrentEditedItem(currentEditedID, formValue.addInvoice.values.itemsGroup[currentEditedID], Number(formValue.addInvoice.values.qtyGroup[currentEditedID]));
       }
@@ -191,7 +190,7 @@ function CreateForm(props: Props) {
       startUpdateInvoiceCustomer();
     }
 
-  }, [customer]);
+  }, [customer, total]);
 
   // Set Edited Items to STORE
   const handleChangeProduct = (e: any) => {

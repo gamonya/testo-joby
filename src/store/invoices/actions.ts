@@ -16,12 +16,15 @@ export enum ActionTypes {
 
   UPDATE_INVOICE = 'UPDATE_INVOICE',
   UPDATE_INVOICE_SUCCESS = 'UPDATE_INVOICE_SUCCESS',
+  UPDATE_INVOICE_FAILURE = 'UPDATE_INVOICE_FAILURE',
   INSERT_ITEM = 'INSERT_ITEM',
 
   START_UPDATE_INVOICE_CUSTOMER = 'START_UPDATE_INVOICE_CUSTOMER',
   UPDATE_INVOICE_CUSTOMER_SUCCESS = 'UPDATE_INVOICE_CUSTOMER_SUCCESS',
 
   START_SAVE_INVOICE = 'START_SAVE_INVOICE',
+  SAVE_INVOICE_FAILURE = 'SAVE_INVOICE_FAILURE',
+
   START_UPDATE_INVOICE_ITEMS ='START_UPDATE_INVOICE_ITEMS',
   UPDATE_INVOICE_ITEMS_SUCCESS = 'UPDATE_INVOICE_ITEMS_SUCCESS',
   UPDATE_INVOICE_ITEMS_FAILURE = 'UPDATE_INVOICE_ITEMS_FAILURE',
@@ -50,6 +53,9 @@ export const Actions = {
 
   updateInvoice: (id: string, invoices: Invoices) => action(ActionTypes.UPDATE_INVOICE, {id, invoices}),
   updateInvoiceSuccess: () => action(ActionTypes.UPDATE_INVOICE_SUCCESS),
+  // fix
+  updateInvoiceFailure: () => action(ActionTypes.UPDATE_INVOICE_ITEMS_FAILURE),
+
   insertItem: (payload: InvoiceItems) => action(ActionTypes.INSERT_ITEM, payload),
 
   updateInvoiceItemsSuccess: (invoice_id: string) => action(ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS, invoice_id),
@@ -58,6 +64,8 @@ export const Actions = {
   invoiceSaved: (payload: boolean) => action(ActionTypes.INVOICE_SAIVED, payload),
   // START EPICS
   startSave: () => action(ActionTypes.START_SAVE_INVOICE),
+  saveInvoiceFailure: () => action(ActionTypes.SAVE_INVOICE_FAILURE),
+
   startInsertInvoice: () => action(ActionTypes.START_INSERT_ITEMS),
   startUpdateInvoiceItems: (payload: number) => action(ActionTypes.START_UPDATE_INVOICE_ITEMS, payload),
   startDeleteInvoice: (id: string) => action(ActionTypes.START_DELETE_INVOICE, id),
