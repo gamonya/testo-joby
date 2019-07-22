@@ -54,7 +54,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   startUpdateInvoiceItems: (payload: number) => dispatch(Actions.startUpdateInvoiceItems(payload)),
   startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice()),
   setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity)),
-  startUpdateInvoiceCustomer: () => dispatch(Actions.startUpdateInvoiceCustomer())
+  startUpdateInvoiceCustomer: () => dispatch(Actions.startUpdateInvoiceCustomer()),
 });
 
 
