@@ -87,6 +87,10 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
                     items: value.response
                   };
                   return Actions.addInvoice(invoice);
+                }),
+                catchError(error => {
+                  console.log('error: ', error);
+                  return of(error);
                 })
               );
             }))
@@ -94,7 +98,7 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
         }
       }
 
-      return of(Actions.updateInvoiceFailure());
+      return of(Actions.saveInvoiceFailure('no save invoice'));
     })
   );
 };
@@ -120,18 +124,23 @@ export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state
     ofType(ActionTypes.INSERT_ITEM, ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS, ActionTypes.START_UPDATE_INVOICE_CUSTOMER),
     switchMap((): any => {
       let item: any = {};
-      if (state.value && state.value.form.addInvoice && state.value.form.addInvoice.values && state.value.invoices.currentIdInvoice && state.value.invoices.invoices) {
+      if (state.value && state.value.form.addInvoice
+        && state.value.form.addInvoice.values
+        && state.value.invoices.currentIdInvoice
+        && state.value.invoices.invoices[state.value.invoices.currentIdInvoice]
+        && state.value.invoices.invoices) {
         item = {
-          customer_id: state.value.form.addInvoice.values.customer || state.value.invoices.invoices[state.value.invoices.currentIdInvoice].customer_id,
+          customer_id: state.value.form.addInvoice.values.customer ,
           discount: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].discount,
           total: state.value.invoices.currentTotalCount
         };
         return invoicesService.updateInvoice(state.value.invoices.currentIdInvoice,
           item).pipe(
-          map(() => Actions.updateInvoiceSuccess())
+          map(() => Actions.updateInvoiceSuccess()),
+          catchError(() => of(Actions.updateInvoiceFailure('update invoice error')))
         );
       }
-     return of(Actions.updateInvoiceFailure());
+     return of(Actions.updateInvoiceFailure('no update invoice'));
 
     })
   );
@@ -181,7 +190,8 @@ export const updateItems = (action$: ActionsObservable<ActionTypeUnion>, state: 
           quantity: state.value.invoices.currentEditedItem.quantity
         };
         return invoicesService.updateInvoiceItem(state.value.invoices.currentIdInvoice, state.value.invoices.currentEditedItem.item_id, item).pipe(
-          map(() => Actions.updateInvoiceItemsSuccess(state.value.invoices.currentIdInvoice))
+          map(() => Actions.updateInvoiceItemsSuccess(state.value.invoices.currentIdInvoice)),
+          catchError(() => of(Actions.updateInvoiceItemsFailure('update error')))
         );
       }
       return of(Actions.updateInvoiceItemsFailure('NO UPDATE ITEMS'));

@@ -171,7 +171,7 @@ function CreateForm(props: Props) {
       }
       validator();
 
-      if (formValue.addInvoice && formValue.addInvoice.values) {
+      if (formValue.addInvoice && formValue.addInvoice.anyTouched && formValue.addInvoice && formValue.addInvoice.values) {
         setCurrentEditedItem(currentEditedID, formValue.addInvoice.values.itemsGroup[currentEditedID], Number(formValue.addInvoice.values.qtyGroup[currentEditedID]));
       }
 
@@ -209,7 +209,7 @@ function CreateForm(props: Props) {
   return (
     <ErrorBoundary>
       {/*  Redirect when EMPTY invoices */}
-      {invoicesState.ids.length === 0 && <Redirect to="/invoices/"/>}
+      {invoicesState.ids.length === 0 && <Redirect to="/invoices/create"/>}
       <form
         className='create-form'
         onSubmit={submitForm}

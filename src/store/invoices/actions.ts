@@ -54,7 +54,7 @@ export const Actions = {
   updateInvoice: (id: string, invoices: Invoices) => action(ActionTypes.UPDATE_INVOICE, {id, invoices}),
   updateInvoiceSuccess: () => action(ActionTypes.UPDATE_INVOICE_SUCCESS),
   // fix
-  updateInvoiceFailure: () => action(ActionTypes.UPDATE_INVOICE_ITEMS_FAILURE),
+  updateInvoiceFailure: (error: string) => action(ActionTypes.UPDATE_INVOICE_FAILURE, error),
 
   insertItem: (payload: InvoiceItems) => action(ActionTypes.INSERT_ITEM, payload),
 
@@ -64,7 +64,7 @@ export const Actions = {
   invoiceSaved: (payload: boolean) => action(ActionTypes.INVOICE_SAIVED, payload),
   // START EPICS
   startSave: () => action(ActionTypes.START_SAVE_INVOICE),
-  saveInvoiceFailure: () => action(ActionTypes.SAVE_INVOICE_FAILURE),
+  saveInvoiceFailure: (error: string) => action(ActionTypes.SAVE_INVOICE_FAILURE, error),
 
   startInsertInvoice: () => action(ActionTypes.START_INSERT_ITEMS),
   startUpdateInvoiceItems: (payload: number) => action(ActionTypes.START_UPDATE_INVOICE_ITEMS, payload),
