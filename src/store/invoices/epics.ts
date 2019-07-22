@@ -1,6 +1,6 @@
 import { ActionsObservable, Epic, ofType, StateObservable } from 'redux-observable';
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
 import { of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
@@ -103,7 +103,7 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
 export const deleteInvoice = (action$: ActionsObservable<ActionTypeUnion>) => {
   return action$.pipe(
     ofType(ActionTypes.START_DELETE_INVOICE),
-    mergeMap((action: any): any => {
+    switchMap((action: any): any => {
       return invoicesService.deleteInvoice(action.payload).pipe(
         map((res) => {
           return Actions.removeInvoice(res.response._id);
@@ -120,7 +120,7 @@ export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state
     ofType(ActionTypes.INSERT_ITEM, ActionTypes.UPDATE_INVOICE_ITEMS_SUCCESS, ActionTypes.START_UPDATE_INVOICE_CUSTOMER),
     switchMap((): any => {
       let item: any = {};
-      if (state.value.form.addInvoice && state.value.form.addInvoice.values && state.value.invoices.currentIdInvoice) {
+      if (state.value && state.value.form.addInvoice && state.value.form.addInvoice.values && state.value.invoices.currentIdInvoice && state.value.invoices.invoices) {
         item = {
           customer_id: state.value.form.addInvoice.values.customer || state.value.invoices.invoices[state.value.invoices.currentIdInvoice].customer_id,
           discount: state.value.invoices.invoices[state.value.invoices.currentIdInvoice].discount,
@@ -141,7 +141,7 @@ export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state
 export const insertInvoiceItems = (action$: ActionsObservable<ActionTypeUnion>, state: StateObservable<AppState>) => {
   return action$.pipe(
     ofType(ActionTypes.START_INSERT_ITEMS),
-    mergeMap((): any => {
+    switchMap((): any => {
       if (state.value.form.addInvoice.values) {
         const { values } = state.value.form.addInvoice;
 

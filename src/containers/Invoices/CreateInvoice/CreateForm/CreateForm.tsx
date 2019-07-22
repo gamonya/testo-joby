@@ -4,6 +4,8 @@ import { Field, reduxForm, FormSection } from 'redux-form';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter, Redirect } from 'react-router-dom';
 
+import ErrorBoundary from '../../../../shared/components/ErrorBoundary/ErrorBoundary'
+
 import { Products } from '../../../../store/products/types';
 import { Customers } from '../../../../store/customers/types';
 import { Dispatch } from 'redux';
@@ -168,6 +170,7 @@ function CreateForm(props: Props) {
         setPriseDynamic();
       }
       validator();
+
       if (formValue.addInvoice && formValue.addInvoice.values) {
         setCurrentEditedItem(currentEditedID, formValue.addInvoice.values.itemsGroup[currentEditedID], Number(formValue.addInvoice.values.qtyGroup[currentEditedID]));
       }
@@ -204,7 +207,7 @@ function CreateForm(props: Props) {
   };
 
   return (
-    <>
+    <ErrorBoundary>
       {/*  Redirect when EMPTY invoices */}
       {invoicesState.ids.length === 0 && <Redirect to="/invoices/"/>}
       <form
@@ -348,7 +351,7 @@ function CreateForm(props: Props) {
           className='submit-button'>Save invoice
         </button>}
       </form>
-    </>
+    </ErrorBoundary>
   );
 
 }
