@@ -28,6 +28,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
   fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart()),
   startDeleteInvoice: (id: string) => dispatch(Actions.startDeleteInvoice(id)),
+
   setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity))
 });
 
@@ -44,8 +45,10 @@ class InvoicesPage extends PureComponent<Props, {}> {
     this.props.fetchInvoices();
     this.props.fetchCustomers();
     this.props.fetchProducts();
-    // reset curent edited items
+    // reset current edited items
     this.props.setCurrentEditedItem('', '', 0);
+    // reset current invoiceId items
+    this.props.setInvoiceId('');
   }
 
   toView = (id: string) => {
