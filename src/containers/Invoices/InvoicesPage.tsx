@@ -47,8 +47,6 @@ class InvoicesPage extends PureComponent<Props, {}> {
     this.props.fetchProducts();
     // reset current edited items
     this.props.setCurrentEditedItem('', '', 0);
-    // reset current invoiceId items
-    this.props.setInvoiceId('');
   }
 
   toView = (id: string) => {
