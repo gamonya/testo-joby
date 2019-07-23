@@ -26,7 +26,9 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
           return Actions.fetchInvoicesSuccess(invoices);
 
         }),
-        catchError((err: string) => of(Actions.fetchInvoicesError(`invoices: ${err}`)))
+        catchError((err: any) => {
+          return of(Actions.fetchInvoicesError(`${err.response.message.error}: ${err.response.message.message}`))
+        })
       );
     })
   );

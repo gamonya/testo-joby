@@ -142,7 +142,9 @@ function CreateForm(props: Props) {
   };
 
   const editInvoice = useCallback(() => {
-    startUpdateInvoiceItems(total);
+    if(formValue.addInvoice && formValue.addInvoice.active) {
+      startUpdateInvoiceItems(total);
+    }
   }, [startUpdateInvoiceItems, total]);
 
   const insertInvoiceItem = () => {
@@ -194,7 +196,7 @@ function CreateForm(props: Props) {
 
   // Update invoice customer
   useEffect(() => {
-    if(formValue.addInvoice && formValue.addInvoice.values) {
+    if(endsUrl && formValue.addInvoice && formValue.addInvoice.values && formValue.addInvoice.active) {
       startUpdateInvoiceCustomer();
     }
 
