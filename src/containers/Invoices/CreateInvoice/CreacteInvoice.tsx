@@ -4,7 +4,7 @@ import { sum } from 'lodash'
 
 import { getCustomers } from '../../../store/customers/selectors';
 import { getProducts, getProductState } from '../../../store/products/selectors';
-import { genereteNextIdInvoice, getCurrentInvoiceId, getInvoiceById } from '../../../store/invoices/selectors';
+import { getCurrentInvoiceId, getInvoiceById } from '../../../store/invoices/selectors';
 import { AppState } from '../../../store';
 
 import './createInvoice.css';
@@ -22,7 +22,6 @@ interface State {
   price: number,
   totalPrice: number,
   discount: number,
-  nextId: number,
   url: string
 }
 
@@ -32,7 +31,6 @@ const mapStateToProps = (state: AppState) => {
     customers: getCustomers(state),
     products: getProducts(state),
     productsState: getProductState(state),
-    nextIDs: genereteNextIdInvoice(state),
     currentIdInvoice: getCurrentInvoiceId(state),
     getInvoiceById: getInvoiceById(state),
     formValue: state.form
@@ -58,7 +56,6 @@ class CreacteInvoice extends PureComponent<Props, State> {
   public state = {
     price: 0,
     discount: 0,
-    nextId: this.props.nextIDs,
     url: this.props.match.url,
     totalPrice: 0
   };
@@ -135,13 +132,12 @@ class CreacteInvoice extends PureComponent<Props, State> {
           invoice={getInvoiceById}
           endsUrl={endsUrl}
           total={this.state.totalPrice}
-          nextId={this.state.nextId}
         />
         {/* =================  Total ===========   */}
         <div className='product-total'>
           <div className='total-title'>total</div>
           {/*  CREATE PAGE */}
-          {this.state.url === '/invoices/create/' && <div className='total-count'>
+          {!endsUrl && <div className='total-count'>
             {
               discountCalculator(this.state.price, this.state.discount)
             }

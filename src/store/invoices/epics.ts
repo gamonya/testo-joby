@@ -22,7 +22,9 @@ export const fetchInvoicesEpic: Epic<ActionTypeUnion> = (action$) => {
               total: items.total
             });
           });
+
           return Actions.fetchInvoicesSuccess(invoices);
+
         }),
         catchError((err: string) => of(Actions.fetchInvoicesError(`invoices: ${err}`)))
       );

@@ -26,7 +26,6 @@ interface PropsOwn {
   products: Products[],
   customers: Customers[],
   invoice: Invoices,
-  nextId: number,
   endsUrl: boolean,
   total: number
 }
@@ -55,6 +54,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice()),
   setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity)),
   startUpdateInvoiceCustomer: () => dispatch(Actions.startUpdateInvoiceCustomer()),
+  fetchInvoicesStart: () => dispatch(Actions.fetchInvoicesStart())
 });
 
 
@@ -186,6 +186,10 @@ function CreateForm(props: Props) {
     },
     [formValue.addInvoice, productState, endsUrl, invoice, products, customers, items, currentEditedID, editInvoice, setPriseDynamic, validator, setCurrentEditedItem]
   );
+  // Fetch invoices
+  useEffect(() => {
+    props.fetchInvoicesStart()
+  }, [invoice]);
 
   // Update invoice customer
   useEffect(() => {
@@ -361,4 +365,5 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(
     form: 'addInvoice',
     validate: myValidator,
     enableReinitialize: true
-  })(CreateForm)));
+  })(React.memo(CreateForm))));
+
