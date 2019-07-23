@@ -145,7 +145,7 @@ function CreateForm(props: Props) {
     if(formValue.addInvoice && formValue.addInvoice.active) {
       startUpdateInvoiceItems(total);
     }
-  }, [formValue.addInvoice, startUpdateInvoiceItems, total]);
+  }, [startUpdateInvoiceItems, total]);
 
   const insertInvoiceItem = () => {
     startInsertInvoiceItems();
@@ -293,7 +293,7 @@ function CreateForm(props: Props) {
                         && formValue.addInvoice.values.qtyGroup
                         &&
                         productState.products[item.product_id].price
-                        * formValue.addInvoice.values.qtyGroup[item.id] || 1
+                        * formValue.addInvoice.values.qtyGroup[item.id] || 0
                         }
                       </td>
                     </tr>
