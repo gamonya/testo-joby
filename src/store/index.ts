@@ -19,7 +19,8 @@ import {
   deleteInvoice,
   fetchInvoicesItems,
   insertInvoiceItems,
-  updateInvoice} from './invoices/epics';
+  updateInvoice
+} from './invoices/epics';
 
 
 const rootEpic = combineEpics(

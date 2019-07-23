@@ -63,7 +63,7 @@ export const Actions = {
 
   invoiceSaved: (payload: boolean) => action(ActionTypes.INVOICE_SAIVED, payload),
   // START EPICS
-  startSave: () => action(ActionTypes.START_SAVE_INVOICE),
+  startSaveInvoice: () => action(ActionTypes.START_SAVE_INVOICE),
   saveInvoiceFailure: (error: string) => action(ActionTypes.SAVE_INVOICE_FAILURE, error),
 
   startInsertInvoice: () => action(ActionTypes.START_INSERT_ITEMS),

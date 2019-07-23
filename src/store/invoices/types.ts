@@ -3,7 +3,6 @@ export interface Invoices {
   customer_id: string,
   discount: number,
   total: number,
-  items: InvoiceItems[]
 }
 
 

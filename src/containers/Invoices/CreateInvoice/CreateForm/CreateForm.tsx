@@ -49,7 +49,7 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   updateInvoice: (id: string, payload: Invoices) => dispatch(Actions.updateInvoice(id, payload)),
   invoiceSaved: (payload: boolean) => dispatch(Actions.invoiceSaved(payload)),
-  startSave: () => dispatch(Actions.startSave()),
+  startSaveInvoice: () => dispatch(Actions.startSaveInvoice()),
   startUpdateInvoiceItems: (payload: number) => dispatch(Actions.startUpdateInvoiceItems(payload)),
   startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice()),
   setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity)),
@@ -81,7 +81,7 @@ function CreateForm(props: Props) {
     productState,
     customers,
     items,
-    startSave,
+    startSaveInvoice,
     startUpdateInvoiceItems,
     startInsertInvoiceItems,
     setCurrentEditedItem,
@@ -135,7 +135,7 @@ function CreateForm(props: Props) {
       }
 
       if (!isError) {
-        startSave();
+        startSaveInvoice();
       }
     }
 

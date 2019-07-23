@@ -80,13 +80,12 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
               };
               // SAVE INVOICE ITEMS
               return invoicesService.addInvoiceItem(res.response._id, items).pipe(
-                map((value) => {
+                map(() => {
                   const invoice = {
                     id: res.response._id,
                     customer_id: res.response.customer_id,
                     discount: res.response.discount,
-                    total: res.response.total,
-                    items: value.response
+                    total: res.response.total
                   };
                   return Actions.addInvoice(invoice);
                 })

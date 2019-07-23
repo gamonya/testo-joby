@@ -124,7 +124,7 @@ class CreacteInvoice extends PureComponent<Props, State> {
     const endsUrl = this.state.url.endsWith('edit');
     return (
       <div className='create-container'>
-        {this.state.url === '/invoices/create/' && <h4 className='viev-title-id'>New Invoice</h4>}
+        {!endsUrl && <h4 className='viev-title-id'>New Invoice</h4>}
         {endsUrl && <h4 className='viev-title-id'>Invoice #{this.props.currentIdInvoice}</h4>}
         <CreateForm
           customers={customers}
