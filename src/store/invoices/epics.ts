@@ -2,7 +2,7 @@ import { ActionsObservable, Epic, ofType, StateObservable } from 'redux-observab
 import { Actions, ActionTypes, ActionTypeUnion } from './actions';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import invoicesService from '../../shared/services/invoicesService';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import discountCalculator from '../../shared/utils/discountCalculator';
 import { AppState } from '../index';
 
@@ -90,12 +90,12 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
                   return Actions.addInvoice(invoice);
                 })
               );
-            }))
+            })),
+            catchError(() => of(Actions.saveInvoiceFailure('error save invoice')))
           );
         }
       }
-
-      return of(Actions.saveInvoiceFailure('no save invoice'));
+      return EMPTY;
     })
   );
 };
@@ -137,7 +137,7 @@ export const updateInvoice = (action$: ActionsObservable<ActionTypeUnion>, state
           catchError(() => of(Actions.updateInvoiceFailure('update invoice error')))
         );
       }
-     return of(Actions.updateInvoiceFailure('no update invoice'));
+     return EMPTY;
 
     })
   );
@@ -191,7 +191,7 @@ export const updateItems = (action$: ActionsObservable<ActionTypeUnion>, state: 
           catchError(() => of(Actions.updateInvoiceItemsFailure('update error')))
         );
       }
-      return of(Actions.updateInvoiceItemsFailure('NO UPDATE ITEMS'));
+      return EMPTY;
     })
   );
 };
