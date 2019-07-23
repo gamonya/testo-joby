@@ -171,6 +171,7 @@ function CreateForm(props: Props) {
       }
       validator();
 
+      // Set edited items to STORE
       if (formValue.addInvoice && formValue.addInvoice.anyTouched && formValue.addInvoice && formValue.addInvoice.values) {
         setCurrentEditedItem(currentEditedID, formValue.addInvoice.values.itemsGroup[currentEditedID], Number(formValue.addInvoice.values.qtyGroup[currentEditedID]));
       }
@@ -199,7 +200,7 @@ function CreateForm(props: Props) {
 
   }, [customer, total]);
 
-  // Set Edited Items to STORE
+  // Set Edited item ID
   const handleChangeProduct = (e: any) => {
     let itemID = '';
     if (e.target && e.target.tagName && e.target.tagName.toUpperCase() === 'TD') {

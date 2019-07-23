@@ -89,10 +89,6 @@ export const saveInvoice = (action$: ActionsObservable<ActionTypeUnion>, state: 
                     items: value.response
                   };
                   return Actions.addInvoice(invoice);
-                }),
-                catchError(error => {
-                  console.log('error: ', error);
-                  return of(error);
                 })
               );
             }))
