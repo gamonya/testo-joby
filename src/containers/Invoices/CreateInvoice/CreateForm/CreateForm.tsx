@@ -186,6 +186,7 @@ function CreateForm(props: Props) {
         && formValue.addInvoice.values) {
         editInvoice();
       }
+
     },
     [formValue.addInvoice, productState, endsUrl, invoice, products, customers, items, currentEditedID, editInvoice, setPriseDynamic, validator, setCurrentEditedItem]
   );

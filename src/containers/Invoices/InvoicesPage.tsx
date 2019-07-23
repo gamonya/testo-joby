@@ -28,6 +28,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
   fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart()),
   startDeleteInvoice: (id: string) => dispatch(Actions.startDeleteInvoice(id)),
+  setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity))
 });
 
 type Props =
@@ -43,6 +44,8 @@ class InvoicesPage extends PureComponent<Props, {}> {
     this.props.fetchInvoices();
     this.props.fetchCustomers();
     this.props.fetchProducts();
+    // reset curent edited items
+    this.props.setCurrentEditedItem('', '', 0);
   }
 
   toView = (id: string) => {
@@ -56,7 +59,7 @@ class InvoicesPage extends PureComponent<Props, {}> {
   };
 
   removeInvoice = (id: string) => {
-    if(window.confirm('Are you sure you want to delete an invoice?')) {
+    if (window.confirm('Are you sure you want to delete an invoice?')) {
       this.props.startDeleteInvoice(id);
     }
 
@@ -92,7 +95,8 @@ class InvoicesPage extends PureComponent<Props, {}> {
                   <button
                     onClick={() => this.removeInvoice(item.id)}
                     className='invoices-btn invoices-btn--delete'
-                  >Delete</button>
+                  >Delete
+                  </button>
                 </td>
               </tr>
             );
