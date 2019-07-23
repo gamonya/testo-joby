@@ -110,7 +110,7 @@ function CreateForm(props: Props) {
 
   }, [formValue.addInvoice, productState.products, products]);
 
-  const validator = () => {
+  const validator = useCallback(() => {
     if (formValue.addInvoice && 'syncErrors' in formValue.addInvoice) {
       if (formValue.anyTouched) {
         setIsError(true);
@@ -119,7 +119,7 @@ function CreateForm(props: Props) {
       setErrors('');
       setIsError(false);
     }
-  };
+  }, [formValue.addInvoice, formValue.anyTouched]);
 
   const createInvoice = () => {
     if (formValue.addInvoice.values) {
@@ -145,7 +145,7 @@ function CreateForm(props: Props) {
     if(formValue.addInvoice && formValue.addInvoice.active) {
       startUpdateInvoiceItems(total);
     }
-  }, [startUpdateInvoiceItems, total]);
+  }, [formValue.addInvoice, startUpdateInvoiceItems, total]);
 
   const insertInvoiceItem = () => {
     startInsertInvoiceItems();
@@ -192,15 +192,16 @@ function CreateForm(props: Props) {
   // Fetch invoices
   useEffect(() => {
     props.fetchInvoicesStart()
-  }, [invoice]);
+  }, [props, invoice]);
 
   // Update invoice customer
   useEffect(() => {
+
     if(endsUrl && formValue.addInvoice && formValue.addInvoice.values && formValue.addInvoice.active) {
       startUpdateInvoiceCustomer();
     }
 
-  }, [customer, total]);
+  }, [endsUrl, formValue.addInvoice, customer, total, startUpdateInvoiceCustomer]);
 
   // Set Edited item ID
   const handleChangeProduct = (e: any) => {
