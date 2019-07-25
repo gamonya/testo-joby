@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import {  RouteComponentProps, withRouter } from 'react-router-dom';
@@ -37,4 +37,4 @@ function Logo(props: Props) {
 export default compose(
     withRouter,
     connect(mapStateToProps)
-)(Logo) as any
+)(Logo) as FunctionComponent

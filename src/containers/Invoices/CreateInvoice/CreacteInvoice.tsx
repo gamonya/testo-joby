@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { sum } from 'lodash'
+import { sum } from 'lodash';
 
 import { getCustomers } from '../../../store/customers/selectors';
 import { getProducts, getProductState } from '../../../store/products/selectors';
@@ -53,6 +53,7 @@ type Props =
 
 class CreacteInvoice extends PureComponent<Props, State> {
   private refTotalCount: React.RefObject<HTMLInputElement> = React.createRef();
+
   public state = {
     price: 0,
     discount: 0,
@@ -64,21 +65,24 @@ class CreacteInvoice extends PureComponent<Props, State> {
     this.props.fetchProducts();
     this.props.fetchCustomers();
 
-    if(this.props.getInvoiceById) {
+    if (this.props.getInvoiceById) {
       this.props.fetchInvoiceItems(this.props.getInvoiceById.id);
     }
-    if(this.refTotalCount.current) {
+
+    if (this.refTotalCount.current) {
       this.props.setCurrentTotal(Number(this.refTotalCount.current.textContent));
     }
   }
 
-  // Return array of price number
+  // Return array of price numbers
   public setTotalPrice = () => {
     if (this.props.formValue && this.props.formValue.addInvoice && this.props.formValue.addInvoice.values) {
       const values = this.props.formValue.addInvoice.values;
+
       if (values.itemsGroup) {
         const res: any = [];
         const keys = Object.keys(values.itemsGroup);
+
         keys.map((item): void => {
           res.push(this.props.productsState.products[values.itemsGroup[item]].price * values.qtyGroup[item]);
         });
@@ -87,15 +91,16 @@ class CreacteInvoice extends PureComponent<Props, State> {
     }
   };
 
-  public componentDidUpdate(prevProps: Readonly<Props>, prevState:  Readonly<State>) {
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
     const { values } = this.props.formValue.addInvoice;
+
     if (prevState.url !== this.props.match.url) {
       this.setState({
         url: this.props.match.url
       });
     }
     // UPDATE TOTAL PRICE
-    if(this.refTotalCount.current) {
+    if (this.refTotalCount.current) {
       this.props.setCurrentTotal(Number(this.refTotalCount.current.textContent));
     }
     //

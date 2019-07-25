@@ -1,6 +1,6 @@
 import {  InvoiseState } from './types';
 import { ActionTypes, ActionTypeUnion } from './actions';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 
 
 const initialState: InvoiseState = {

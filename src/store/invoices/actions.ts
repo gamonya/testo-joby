@@ -52,7 +52,7 @@ export const Actions = {
 
   updateInvoice: (id: string, invoices: Invoices) => action(ActionTypes.UPDATE_INVOICE, {id, invoices}),
   updateInvoiceSuccess: () => action(ActionTypes.UPDATE_INVOICE_SUCCESS),
-  // fix
+
   updateInvoiceFailure: (error: string) => action(ActionTypes.UPDATE_INVOICE_FAILURE, error),
 
   insertItem: (payload: InvoiceItems) => action(ActionTypes.INSERT_ITEM, payload),

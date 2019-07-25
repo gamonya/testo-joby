@@ -164,6 +164,7 @@ function CreateForm(props: Props) {
     }
   };
 
+
   useEffect(() => {
       if (products
         && formValue.addInvoice
@@ -171,6 +172,7 @@ function CreateForm(props: Props) {
         && formValue.addInvoice.values.qty !== '') {
         setPriseDynamic();
       }
+
       validator();
 
       // Set edited items to STORE
@@ -186,7 +188,6 @@ function CreateForm(props: Props) {
         && formValue.addInvoice.values) {
         editInvoice();
       }
-
     },
     [formValue.addInvoice, productState, endsUrl, invoice, products, customers, items, currentEditedID, editInvoice, setPriseDynamic, validator, setCurrentEditedItem]
   );
