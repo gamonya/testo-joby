@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -28,39 +28,37 @@ type Props =
   & ReturnType<typeof mapStateToProps>
   ;
 
-class CustomersPage extends PureComponent<Props, {}> {
-  public render() {
-    const { customers, error } = this.props;
-    if (!error) {
-      return (
-        <Paper className='table'>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Customer Name</TableCell>
-                <TableCell align="right">Customer Address</TableCell>
-                <TableCell align="right">Customer Phone number</TableCell>
+function CustomersPage(props: Props) {
+  const { customers, error } = props;
+  if (!error) {
+    return (
+      <Paper className='table'>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Customer Name</TableCell>
+              <TableCell align="right">Customer Address</TableCell>
+              <TableCell align="right">Customer Phone number</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {customers.map(item => (
+              <TableRow key={item.id}>
+                <TableCell component="th" scope="row">
+                  {item.name}
+                </TableCell>
+                <TableCell align="right">{item.address}</TableCell>
+                <TableCell align="right">{item.phone}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {customers.map(item => (
-                <TableRow key={item.id}>
-                  <TableCell component="th" scope="row">
-                    {item.name}
-                  </TableCell>
-                  <TableCell align="right">{item.address}</TableCell>
-                  <TableCell align="right">{item.phone}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
-      );
-    } else {
-      return (
-        <h1>{error}</h1>
-      );
-    }
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+  } else {
+    return (
+      <h1>{error}</h1>
+    );
   }
 }
 

@@ -15,6 +15,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
+import Button from '@material-ui/core/Button';
 //
 
 import { Actions } from '../../store/invoices/actions';
@@ -22,7 +23,7 @@ import { Actions } from '../../store/invoices/actions';
 import fetchProductsHoc from '../../shared/hocs/fetchProductsHoc';
 import fetchCustomersHoc from '../../shared/hocs/fetchCustomersHoc';
 import fetchInvoicesHoc from '../../shared/hocs/fetchInvoicesHoc';
-import Button from '@material-ui/core/Button';
+
 
 // STORE PROPS
 const mapStateToProps = (state: AppState) => {
@@ -104,44 +105,14 @@ class InvoicesPage extends PureComponent<Props, {}> {
                     <Button variant="outlined" size="small" color="primary" onClick={() => this.toView(item.id)}>
                       View
                     </Button>
-                    <Button size="small"  onClick={() => this.toEdit(item.id)}><Icon>edit</Icon></Button>
-                    <Button size="small"   onClick={() => this.removeInvoice(item.id)} ><Icon  color="error">delete</Icon></Button>
+                    <Button size="small" onClick={() => this.toEdit(item.id)}><Icon>edit</Icon></Button>
+                    <Button size="small" onClick={() => this.removeInvoice(item.id)}><Icon color="error">delete</Icon></Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </Paper>
-        {/*<table className='table'>*/}
-        {/*  <tbody>*/}
-        {/*  <tr className='table-title'>*/}
-        {/*    <th>Invoice ID</th>*/}
-        {/*    <th>Customer Name</th>*/}
-        {/*    <th>Discount %</th>*/}
-        {/*    <th>Total</th>*/}
-        {/*    <th>Actions</th>*/}
-        {/*  </tr>*/}
-        {/*  {!isLoadingCustomer && invoices.map((item) => {*/}
-        {/*    return (*/}
-        {/*      <tr key={item.id}>*/}
-        {/*        <td>{item.id}</td>*/}
-        {/*        <td>{customer.customers[item.customer_id].name}</td>*/}
-        {/*        <td>{item.discount}</td>*/}
-        {/*        <td>{item.total.toString()}</td>*/}
-        {/*        <td>*/}
-        {/*          <button className='invoices-btn invoices-btn--view' onClick={() => this.toView(item.id)}>View</button>*/}
-        {/*          <button className='invoices-btn invoices-btn--edit' onClick={() => this.toEdit(item.id)}>Edit</button>*/}
-        {/*          <button*/}
-        {/*            onClick={() => this.removeInvoice(item.id)}*/}
-        {/*            className='invoices-btn invoices-btn--delete'*/}
-        {/*          >Delete*/}
-        {/*          </button>*/}
-        {/*        </td>*/}
-        {/*      </tr>*/}
-        {/*    );*/}
-        {/*  })}*/}
-        {/*  </tbody>*/}
-        {/*</table>*/}
       </div>
     );
   }

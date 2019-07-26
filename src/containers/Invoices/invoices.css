@@ -1,22 +1,3 @@
 .invoices {
     width: 100%;
 }
-
-.invoices-btn {
-    padding: 2%;
-    cursor: pointer;
-    border: 1px solid grey;
-    margin: 2%;
-}
-
-.invoices-btn--view {
-    background: #A4C2F4;
-}
-
-.invoices-btn--edit {
-    background: #F6B26B;
-}
-
-.invoices-btn--delete {
-    background: #E06666;
-}
