@@ -13,7 +13,6 @@ function fetchProductsHoc(WrappedComponent: React.ComponentType<any>): React.Com
     ;
 
   class FetchProductsHoc extends Component<Props, {}> {
-
     componentDidMount(): void {
       this.props.fetchProducts();
     }
