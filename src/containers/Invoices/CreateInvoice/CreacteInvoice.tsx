@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { ComponentClass, PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { sum } from 'lodash';
 
@@ -9,14 +9,15 @@ import { AppState } from '../../../store';
 
 import './createInvoice.css';
 import discountCalculator from '../../../shared/utils/discountCalculator';
-import { Dispatch } from 'redux';
-
-import { Actions as ActionsProducts } from '../../../store/products/actions';
-import { Actions as ActionsCustomers } from '../../../store/customers/actions';
+import { Dispatch, compose } from 'redux';
 
 import CreateForm from './CreateForm/CreateForm';
 import { RouteComponentProps } from 'react-router';
 import { Actions } from '../../../store/invoices/actions';
+
+// HOCS
+import fetchCustomersHoc from '../../../shared/hocs/fetchCustomersHoc';
+import fetchProductsHoc from '../../../shared/hocs/fetchProductsHoc';
 
 interface State {
   price: number,
@@ -38,8 +39,6 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart()),
-  fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
   fetchInvoiceItems: (id: string) => dispatch(Actions.fetchInvoiceItems(id)),
   setCurrentTotal: (payload: number) => dispatch(Actions.setCurrentTotalCount(payload))
 });
@@ -62,9 +61,6 @@ class CreacteInvoice extends PureComponent<Props, State> {
   };
 
   public componentDidMount(): void {
-    this.props.fetchProducts();
-    this.props.fetchCustomers();
-
     if (this.props.getInvoiceById) {
       this.props.fetchInvoiceItems(this.props.getInvoiceById.id);
     }
@@ -159,4 +155,8 @@ class CreacteInvoice extends PureComponent<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreacteInvoice);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  fetchCustomersHoc,
+  fetchProductsHoc
+)(CreacteInvoice) as ComponentClass;

@@ -37,7 +37,6 @@ type Props =
   & ReturnType<typeof mapDispatchToProps>
   ;
 
-
 class InvoicesPage extends PureComponent<Props, {}> {
 
   public componentDidMount(): void {

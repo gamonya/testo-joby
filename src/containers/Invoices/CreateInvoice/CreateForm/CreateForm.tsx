@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import myValidator from './validate';
 import { Field, reduxForm, FormSection } from 'redux-form';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { RouteComponentProps, withRouter, Redirect } from 'react-router-dom';
 
-import ErrorBoundary from '../../../../shared/components/ErrorBoundary/ErrorBoundary'
+import ErrorBoundary from '../../../../shared/components/ErrorBoundary/ErrorBoundary';
 
 import { Products } from '../../../../store/products/types';
 import { Customers } from '../../../../store/customers/types';
@@ -21,6 +22,9 @@ import {
 import { AppState } from '../../../../store';
 import { getProductState } from '../../../../store/products/selectors';
 import { customSelect, customInputNumber } from './customFields';
+
+// HOCS
+import fetchInvoicesHoc from '../../../../shared/hocs/fetchInvoicesHoc';
 
 interface PropsOwn {
   products: Products[],
@@ -53,8 +57,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   startUpdateInvoiceItems: (payload: number) => dispatch(Actions.startUpdateInvoiceItems(payload)),
   startInsertInvoiceItems: () => dispatch(Actions.startInsertInvoice()),
   setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity)),
-  startUpdateInvoiceCustomer: () => dispatch(Actions.startUpdateInvoiceCustomer()),
-  fetchInvoicesStart: () => dispatch(Actions.fetchInvoicesStart())
+  startUpdateInvoiceCustomer: () => dispatch(Actions.startUpdateInvoiceCustomer())
 });
 
 
@@ -64,7 +67,6 @@ type Props =
   & PropsOwn
   & RouteComponentProps
   ;
-
 
 function CreateForm(props: Props) {
 
@@ -90,9 +92,9 @@ function CreateForm(props: Props) {
   } = props;
 
   let customer: string = '';
-   if(formValue.addInvoice && formValue.addInvoice.values) {
-     customer = formValue.addInvoice.values.customer;
-   }
+  if (formValue.addInvoice && formValue.addInvoice.values) {
+    customer = formValue.addInvoice.values.customer;
+  }
 
   const [price, setPrice] = useState(1);
   // ERRORS
@@ -142,7 +144,7 @@ function CreateForm(props: Props) {
   };
 
   const editInvoice = useCallback(() => {
-    if(formValue.addInvoice && formValue.addInvoice.active) {
+    if (formValue.addInvoice && formValue.addInvoice.active) {
       startUpdateInvoiceItems(total);
     }
   }, [startUpdateInvoiceItems, total]);
@@ -191,15 +193,11 @@ function CreateForm(props: Props) {
     },
     [formValue.addInvoice, productState, endsUrl, invoice, products, customers, items, currentEditedID, editInvoice, setPriseDynamic, validator, setCurrentEditedItem]
   );
-  // Fetch invoices
-  useEffect(() => {
-    props.fetchInvoicesStart()
-  }, [props, invoice]);
 
   // Update invoice customer
   useEffect(() => {
 
-    if(endsUrl && formValue.addInvoice && formValue.addInvoice.values && formValue.addInvoice.active) {
+    if (endsUrl && formValue.addInvoice && formValue.addInvoice.values && formValue.addInvoice.active) {
       startUpdateInvoiceCustomer();
     }
 
@@ -366,10 +364,21 @@ function CreateForm(props: Props) {
 
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(
-  reduxForm<{}, Props>({
+// export default withRouter(connect(mapStateToProps, mapDispatchToProps)(
+//   reduxForm<{}, Props>({
+//     form: 'addInvoice',
+//     validate: myValidator,
+//     enableReinitialize: true
+//   })(React.memo(CreateForm))));
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
     form: 'addInvoice',
     validate: myValidator,
     enableReinitialize: true
-  })(React.memo(CreateForm))));
-
+  }),
+  fetchInvoicesHoc,
+  React.memo
+)(CreateForm) as any;
