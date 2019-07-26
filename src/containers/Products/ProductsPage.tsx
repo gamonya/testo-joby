@@ -28,37 +28,35 @@ type Props =
   & ReturnType<typeof mapStateToProps>
   ;
 
-class ProductsPage extends Component<Props, {}> {
-  public render() {
-    const { products, error } = this.props;
-    if (!error) {
-      return (
-        <Paper className='table'>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">Product Name</TableCell>
-                <TableCell align="center">Price</TableCell>
+function ProductsPage(props: Props) {
+  const { products, error } = props;
+  if (!error) {
+    return (
+      <Paper className='table'>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">Product Name</TableCell>
+              <TableCell align="center">Price</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {products.map(item => (
+              <TableRow key={item.id}>
+                <TableCell align="center">
+                  {item.name}
+                </TableCell>
+                <TableCell align="center">{item.price}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {products.map(item => (
-                <TableRow key={item.id}>
-                  <TableCell align="center">
-                    {item.name}
-                  </TableCell>
-                  <TableCell align="center">{item.price}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
-      );
-    } else {
-      return (
-        <h1>{error}</h1>
-      );
-    }
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+  } else {
+    return (
+      <h1>{error}</h1>
+    );
   }
 }
 

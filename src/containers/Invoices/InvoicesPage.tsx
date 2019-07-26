@@ -1,4 +1,4 @@
-import React, { ComponentClass, PureComponent } from 'react';
+import React, { ComponentClass, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import './invoices.css';
@@ -49,73 +49,70 @@ type Props =
   & ReturnType<typeof mapDispatchToProps>
   ;
 
-class InvoicesPage extends PureComponent<Props, {}> {
+function InvoicesPage(props: Props) {
+  const { invoices, customer, isLoadingCustomer, customersError, invoiceError } = props;
 
-  public componentDidMount(): void {
-    // reset current edited items
-    this.props.setCurrentEditedItem('', '', 0);
-  }
+  useEffect(() => {
+    props.setCurrentEditedItem('', '', 0);
+  }, []);
 
-  toView = (id: string) => {
-    this.props.setInvoiceId(id);
-    this.props.history.push(`/invoice/${id}/view/`);
+  const toView = (id: string) => {
+    props.setInvoiceId(id);
+    props.history.push(`/invoice/${id}/view/`);
   };
 
-  toEdit = (id: string) => {
-    this.props.setInvoiceId(id);
-    this.props.history.push(`/invoice/${id}/edit`);
+  const toEdit = (id: string) => {
+    props.setInvoiceId(id);
+    props.history.push(`/invoice/${id}/edit`);
   };
 
-  removeInvoice = (id: string) => {
+  const removeInvoice = (id: string) => {
     if (window.confirm('Are you sure you want to delete an invoice?')) {
-      this.props.startDeleteInvoice(id);
+      props.startDeleteInvoice(id);
     }
 
   };
 
-  public render() {
-    const { invoices, customer, isLoadingCustomer, customersError, invoiceError } = this.props;
-    return (
-      <div className='invoices'>
-        {isLoadingCustomer && <h1>Loading ...</h1>}
-        {/*  ERROR  CONTENT */}
-        {customersError && <h2>{customersError}</h2>}
-        {invoiceError && <h2>{invoiceError}</h2>}
-        <Paper className='table'>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Invoice ID</TableCell>
-                <TableCell align="right">Customer Name</TableCell>
-                <TableCell align="right">Discount (%)</TableCell>
-                <TableCell align="right">Total</TableCell>
-                <TableCell align="center">Actions</TableCell>
+  return (
+    <div className='invoices'>
+      {isLoadingCustomer && <h1>Loading ...</h1>}
+      {/*  ERROR  CONTENT */}
+      {customersError && <h2>{customersError}</h2>}
+      {invoiceError && <h2>{invoiceError}</h2>}
+      <Paper className='table'>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Invoice ID</TableCell>
+              <TableCell align="right">Customer Name</TableCell>
+              <TableCell align="right">Discount (%)</TableCell>
+              <TableCell align="right">Total</TableCell>
+              <TableCell align="center">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!isLoadingCustomer && invoices.map(item => (
+              <TableRow key={item.id}>
+                <TableCell component="th" scope="row">
+                  {item.id}
+                </TableCell>
+                <TableCell align="right">{customer.customers[item.customer_id].name}</TableCell>
+                <TableCell align="right">{item.discount}</TableCell>
+                <TableCell align="right">{item.total}</TableCell>
+                <TableCell align="right">
+                  <Button variant="outlined" size="small" color="primary" onClick={() => toView(item.id)}>
+                    View
+                  </Button>
+                  <Button size="small" onClick={() => toEdit(item.id)}><Icon>edit</Icon></Button>
+                  <Button size="small" onClick={() => removeInvoice(item.id)}><Icon color="error">delete</Icon></Button>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {!isLoadingCustomer && invoices.map(item => (
-                <TableRow key={item.id}>
-                  <TableCell component="th" scope="row">
-                    {item.id}
-                  </TableCell>
-                  <TableCell align="right">{customer.customers[item.customer_id].name}</TableCell>
-                  <TableCell align="right">{item.discount}</TableCell>
-                  <TableCell align="right">{item.total}</TableCell>
-                  <TableCell align="right">
-                    <Button variant="outlined" size="small" color="primary" onClick={() => this.toView(item.id)}>
-                      View
-                    </Button>
-                    <Button size="small" onClick={() => this.toEdit(item.id)}><Icon>edit</Icon></Button>
-                    <Button size="small" onClick={() => this.removeInvoice(item.id)}><Icon color="error">delete</Icon></Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
-      </div>
-    );
-  }
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    </div>
+  );
 }
 
 export default compose(
