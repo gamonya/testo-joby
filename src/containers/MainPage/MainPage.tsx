@@ -2,7 +2,15 @@ import React, { ComponentClass } from 'react';
 import { connect } from 'react-redux';
 
 import { compose, Dispatch } from 'redux';
-
+// UI
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+//
 import { Actions } from '../../store/invoices/actions';
 import { Actions as ActionsCustomers } from '../../store/customers/actions';
 import { Actions as ActionsProducts } from '../../store/products/actions';
@@ -22,7 +30,7 @@ const mapStateToProps = (state: AppState) => {
     invoiceError: getInvoiceError(state),
     // customers
     customersError: getCustomersError(state),
-    isLoadingCustomer: isLoadingCustomer(state),
+    isLoadingCustomer: isLoadingCustomer(state)
   };
 };
 
@@ -63,32 +71,38 @@ class MainPage extends React.PureComponent<Props, {}> {
         {/*  ERROR  CONTENT */}
         {customersError && <h2>{customersError}</h2>}
         {invoiceError && <h2>{invoiceError}</h2>}
-        {!isLoadingCustomer && <table className='table'>
-          <tbody>
-          <tr className='table-title'>
-            <th>Invoice ID</th>
-            <th>Customer Name</th>
-            <th>Discount <br/>
-              (%)
-            </th>
-            <th>Total</th>
-            <th>Actions</th>
-          </tr>
-          {invoices.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{customers.customers[item.customer_id].name}</td>
-                <td>{item.discount}</td>
-                <td>{item.total}</td>
-                <td>
-                  <button className='invoices-btn invoices-btn--view' onClick={() => this.toView(item.id)}>View</button>
-                </td>
-              </tr>
-            );
-          })}
-          </tbody>
-        </table>}
+        {!isLoadingCustomer &&
+        <Paper className='table'>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Invoice ID</TableCell>
+                <TableCell align="right">Customer Name</TableCell>
+                <TableCell align="right">Discount (%)</TableCell>
+                <TableCell align="right">Total</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {invoices.map(item => (
+                <TableRow key={item.id}>
+                  <TableCell component="th" scope="row">
+                    {item.id}
+                  </TableCell>
+                  <TableCell align="right">{customers.customers[item.customer_id].name}</TableCell>
+                  <TableCell align="right">{item.discount}</TableCell>
+                  <TableCell align="right">{item.total}</TableCell>
+                  <TableCell align="right">
+                    <Button variant="outlined" size="small" color="primary" onClick={() => this.toView(item.id)}>
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+        }
       </>
     );
   }

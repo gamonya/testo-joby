@@ -4,6 +4,8 @@ import { Field, reduxForm, FormSection } from 'redux-form';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { RouteComponentProps, withRouter, Redirect } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 
 import ErrorBoundary from '../../../../shared/components/ErrorBoundary/ErrorBoundary';
 
@@ -275,7 +277,7 @@ function CreateForm(props: Props) {
                         {/*  task qty */}
                         <FormSection name='qtyGroup'>
                           <Field
-                            component="input"
+                            component={customInputNumber}
                             type='number'
                             name={`${item.id}`}
                             min='1'
@@ -353,11 +355,14 @@ function CreateForm(props: Props) {
           </div>
         </div>
         {/* ===========  SUBMIT BUTTON =========   */}
-        {<button
-          type="submit"
-          disabled={isError}
-          className='submit-button'>Save invoice
-        </button>}
+        <div className='submit-button'>
+          <Button
+            type="submit"
+            disabled={isError}
+          >
+            <Icon fontSize="large">save</Icon>
+          </Button>
+        </div>
       </form>
     </ErrorBoundary>
   );

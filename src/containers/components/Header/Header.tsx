@@ -2,6 +2,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import './header.css';
 
@@ -25,19 +28,13 @@ function Header({activeInvoicesCount}: Props) {
   return (
     <header className='header'>
       <Logo/>
-      <nav className='navigation'>
-        <ul className='navigation-tabs'>
-          <li className='navigation-items'>
-            <NavLink to='/customers/' activeClassName='is-active'>Customers</NavLink>
-          </li>
-          <li className='navigation-items'>
-            <NavLink to='/products/' activeClassName='is-active'>Products</NavLink>
-          </li>
-          <li className='navigation-items'>
-            <NavLink to='/invoices/' activeClassName='is-active'>Invoices({activeInvoicesCount})</NavLink>
-          </li>
-        </ul>
-      </nav>
+      <Grid item >
+        <ButtonGroup fullWidth aria-label="Header navigation"  color="primary"  variant="contained"  size="large">
+          <Button><NavLink to='/customers/' activeClassName='is-active'>Customers</NavLink></Button>
+          <Button> <NavLink to='/products/' activeClassName='is-active'>Products</NavLink></Button>
+          <Button> <NavLink to='/invoices/' activeClassName='is-active'>Invoices({activeInvoicesCount})</NavLink></Button>
+        </ButtonGroup>
+      </Grid>
       <InvoiceButton/>
     </header>
   );

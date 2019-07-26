@@ -5,6 +5,14 @@ import './products.css';
 import { AppState } from '../../store';
 import { getProducts, getErrorProducts } from '../../store/products/selectors';
 
+// UI
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+//
 import fetchProductsHoc from '../../shared/hocs/fetchProductsHoc';
 
 // STORE PROPS
@@ -16,7 +24,6 @@ const mapStateToProps = (state: AppState) => {
 };
 
 
-
 type Props =
   & ReturnType<typeof mapStateToProps>
   ;
@@ -26,22 +33,26 @@ class ProductsPage extends Component<Props, {}> {
     const { products, error } = this.props;
     if (!error) {
       return (
-        <table className='table'>
-          <tbody>
-          <tr className='table-title'>
-            <th>Product Name</th>
-            <th>Price</th>
-          </tr>
-          {products.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>{item.name}</td>
-                <td>{item.price} $</td>
-              </tr>
-            );
-          })}
-          </tbody>
-        </table>
+        <Paper className='table'>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">Product Name</TableCell>
+                <TableCell align="center">Price</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {products.map(item => (
+                <TableRow key={item.id}>
+                  <TableCell align="center">
+                    {item.name}
+                  </TableCell>
+                  <TableCell align="center">{item.price}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
       );
     } else {
       return (

@@ -1,8 +1,16 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import './customer.css';
 
+// UI
+import './customer.css';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+//
 import { AppState } from '../../store';
 import { getCustomers, getCustomersError } from '../../store/customers/selectors';
 
@@ -25,24 +33,28 @@ class CustomersPage extends PureComponent<Props, {}> {
     const { customers, error } = this.props;
     if (!error) {
       return (
-        <table className='table'>
-          <tbody>
-          <tr className='table-title'>
-            <th>Customer Name</th>
-            <th>Customer Address</th>
-            <th>Customer Phone number</th>
-          </tr>
-          {customers.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>{item.name}</td>
-                <td>{item.address}</td>
-                <td>{item.phone}</td>
-              </tr>
-            );
-          })}
-          </tbody>
-        </table>
+        <Paper className='table'>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Customer Name</TableCell>
+                <TableCell align="right">Customer Address</TableCell>
+                <TableCell align="right">Customer Phone number</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {customers.map(item => (
+                <TableRow key={item.id}>
+                  <TableCell component="th" scope="row">
+                    {item.name}
+                  </TableCell>
+                  <TableCell align="right">{item.address}</TableCell>
+                  <TableCell align="right">{item.phone}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
       );
     } else {
       return (

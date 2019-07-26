@@ -1,4 +1,5 @@
 import React from 'react';
+import TextField from '@material-ui/core/TextField';
 
 export const customSelect = ({
                                input,
@@ -35,7 +36,7 @@ export const customInputNumber = ({
   return (<div>
     <label>{label}</label>
     <div>
-      <input {...input} placeholder={label} type={type} className={className} min={min} max={max}/>
+      <TextField {...input} placeholder={label} type={type} className={className} min={min} max={max}/>
       <br/>
       {touched &&
       ((error && <span>{error}</span>))}

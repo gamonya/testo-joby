@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Dispatch } from 'redux';
 
+import Fab from '@material-ui/core/Fab';
+import Icon from '@material-ui/core/Icon';
 import './invoiceButton.css';
 import { Actions } from '../../../store/invoices/actions';
 
@@ -23,12 +25,12 @@ function InvoiceButton(props: Props) {
   };
 
   return (
-    <div className='wrapp-button' onClick={resetInvoiceId}>
-      <NavLink to='/invoices/create/' className='invoice-button'>
-        <span className='btn-plus'>+</span>
-        <span>New Invoice</span>
-      </NavLink>
-    </div>
+    <NavLink to='/invoices/create/'>
+      <Fab variant="extended" aria-label="create" onClick={resetInvoiceId}>
+        <Icon>add</Icon>
+        New Invoice
+      </Fab>
+    </NavLink>
   );
 }
 
