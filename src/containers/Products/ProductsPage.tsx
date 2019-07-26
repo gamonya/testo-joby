@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { compose } from 'redux';
 import './products.css';
 import { AppState } from '../../store';
 import { getProducts, getErrorProducts } from '../../store/products/selectors';
@@ -51,4 +51,7 @@ class ProductsPage extends Component<Props, {}> {
   }
 }
 
-export default connect(mapStateToProps)(fetchProductsHoc(ProductsPage));
+export default compose(
+  connect(mapStateToProps),
+  fetchProductsHoc
+)(ProductsPage);

@@ -8,8 +8,10 @@ import { AppState } from '../../store';
 import { Dispatch, compose } from 'redux';
 
 import { Actions } from '../../store/invoices/actions';
-import { Actions as ActionsCustomers } from '../../store/customers/actions';
-import { Actions as ActionsProducts } from '../../store/products/actions';
+// HOCS
+import fetchProductsHoc from '../../shared/hocs/fetchProductsHoc';
+import fetchCustomersHoc from '../../shared/hocs/fetchCustomersHoc';
+import fetchInvoicesHoc from '../../shared/hocs/fetchInvoicesHoc';
 
 // STORE PROPS
 const mapStateToProps = (state: AppState) => {
@@ -24,9 +26,6 @@ const mapStateToProps = (state: AppState) => {
 };
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setInvoiceId: (id: string) => dispatch(Actions.setCurrentIdInvoice(id)),
-  fetchInvoices: () => dispatch(Actions.fetchInvoicesStart()),
-  fetchCustomers: () => dispatch(ActionsCustomers.fetchCustomersStart()),
-  fetchProducts: () => dispatch(ActionsProducts.fetchProductsStart()),
   startDeleteInvoice: (id: string) => dispatch(Actions.startDeleteInvoice(id)),
 
   setCurrentEditedItem: (id: string, product: string, quantity: number) => dispatch(Actions.setCurrentEditedItem(id, product, quantity))
@@ -42,9 +41,6 @@ type Props =
 class InvoicesPage extends PureComponent<Props, {}> {
 
   public componentDidMount(): void {
-    this.props.fetchInvoices();
-    this.props.fetchCustomers();
-    this.props.fetchProducts();
     // reset current edited items
     this.props.setCurrentEditedItem('', '', 0);
   }
@@ -111,5 +107,8 @@ class InvoicesPage extends PureComponent<Props, {}> {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  fetchProductsHoc,
+  fetchCustomersHoc,
+  fetchInvoicesHoc
 )(InvoicesPage) as ComponentClass;

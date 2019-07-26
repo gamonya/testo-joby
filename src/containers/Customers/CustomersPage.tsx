@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-
+import { compose } from 'redux';
 import './customer.css';
 
 import { AppState } from '../../store';
 import { getCustomers, getCustomersError } from '../../store/customers/selectors';
-import { Dispatch } from 'redux';
-import { Actions } from '../../store/customers/actions';
+
+import fetchCustomersHoc from '../../shared/hocs/fetchCustomersHoc';
 
 // STORE PROPS
 const mapStateToProps = (state: AppState) => {
@@ -16,24 +16,14 @@ const mapStateToProps = (state: AppState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchCustomers: () => dispatch(Actions.fetchCustomersStart())
-});
-
 type Props =
   & ReturnType<typeof mapStateToProps>
-  & ReturnType<typeof mapDispatchToProps>
   ;
 
 class CustomersPage extends PureComponent<Props, {}> {
-
-  public componentDidMount(): void {
-    this.props.fetchCustomers();
-  }
-
   public render() {
     const { customers, error } = this.props;
-    if(!error) {
+    if (!error) {
       return (
         <table className='table'>
           <tbody>
@@ -57,9 +47,12 @@ class CustomersPage extends PureComponent<Props, {}> {
     } else {
       return (
         <h1>{error}</h1>
-      )
+      );
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomersPage);
+export default compose(
+  connect(mapStateToProps),
+  fetchCustomersHoc
+)(CustomersPage);

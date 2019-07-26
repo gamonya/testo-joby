@@ -1,10 +1,10 @@
-import React, { Component, ComponentClass, ComponentType } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Actions } from '../../store/products/actions';
 
 
-function fetchProductsHoc(WrappedComponent: ComponentType<any>) {
+function fetchProductsHoc(WrappedComponent: React.ComponentType<any>): React.ComponentType {
   const mapDispatchToProps = (dispatch: Dispatch) => ({
     fetchProducts: () => dispatch(Actions.fetchProductsStart())
   });
